@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIDRA MOTION CLINIC DEMO - Central Healthcare Ecosystem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --accent: #0284c7;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px;
+    }
+    .header {
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 36px;
+    }
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(13, 148, 136, 0.2);
+      border: 1px solid #14b8a6;
+      color: #2dd4bf;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      box-shadow: 0 0 10px #2dd4bf;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px;
+      margin-bottom: 40px;
+    }
+    .app-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+      box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+    }
+    .app-card.featured {
+      border-color: #0d9488;
+      background: linear-gradient(180deg, #132731 0%, #1e293b 100%);
+    }
+    .app-card.featured::before {
+      content: "MASTER CONTROLLER";
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: #0d9488;
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+    }
+    .card-icon {
+      font-size: 2.4rem;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .card-role {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      flex: 1;
+    }
+    .card-features {
+      list-style: none;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-features li::before {
+      content: "✓ ";
+      color: #10b981;
+      font-weight: 800;
+    }
+    .btn-launch {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #0d9488;
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 14px 20px;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .btn-launch:hover {
+      background: #0f766e;
+      box-shadow: 0 8px 16px -2px rgba(13, 148, 136, 0.4);
+    }
+    .demo-creds {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #94a3b8;
+    }
+    .system-info-bar {
+      width: 100%;
+      max-width: 1100px;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="badge-live">
+      <span class="dot"></span>
+      <span>UNIFIED CENTRAL REAL-TIME SYSTEM</span>
+    </div>
+    <h1>SIDRA MOTION CLINIC DEMO</h1>
+    <p class="subtitle">
+      One Central Backend & Database powering three specialized cross-platform applications (Android, iPhone & Windows) with instant real-time synchronization.
+    </p>
+  </header>
+
+  <div class="cards-grid">
+
+    <!-- Card 1: Assistant App -->
+    <div class="app-card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">1. Assistant / Reception</div>
+      <div class="card-role">Prompt 1 Module</div>
+      <p class="card-desc">
+        Fast patient onboarding, duplicate detection, automated Parcha sequencing starting from 300, and live audio/vibration Next Patient alerts.
+      </p>
+      <div class="demo-creds">
+        Username: assistant<br>
+        PIN: 1234
+      </div>
+      <ul class="card-features">
+        <li>Parcha numbering starting at 300</li>
+        <li>Instant "Save & Send to Doctor"</li>
+        <li>Loud audio chime & Android vibration alert</li>
+        <li>Offline detection & safe recovery</li>
+      </ul>
+      <a href="/assistant" class="btn-launch">
+        🚀 Launch Assistant Portal
+      </a>
+    </div>
+
+    <!-- Card 2: Doctor Master Console -->
+    <div class="app-card featured">
+      <div class="card-icon">👨‍⚕️</div>
+      <div class="card-title">2. Doctor / Admin Master</div>
+      <div class="card-role">Prompt 2 Master Module</div>
+      <p class="card-desc">
+        Complete consultation engine, live patient queue, "Next Patient" alert trigger, custom prescription template designer (letterhead & pre-printed), and role switching.
+      </p>
+      <div class="demo-creds">
+        Username: doctor<br>
+        PIN: 9999
+      </div>
+      <ul class="card-features">
+        <li>Big "NEXT PATIENT" alert trigger</li>
+        <li>Custom Prescription Designer & PDF</li>
+        <li>Switch between Doctor, Assistant & Medical</li>
+        <li>Full Letterhead vs Pre-printed modes</li>
+      </ul>
+      <a href="/doctor" class="btn-launch" style="background: #0284c7;">
+        🩺 Launch Doctor Master
+      </a>
+    </div>
+
+    <!-- Card 3: Medical / Billing -->
+    <div class="app-card">
+      <div class="card-icon">💊</div>
+      <div class="card-title">3. Medical / Billing</div>
+      <div class="card-role">Prompt 3 Module</div>
+      <p class="card-desc">
+        Pharmacy queue receiving real-time doctor prescriptions, batch & inventory tracking, automated bill calculation, stock deduction, and professional receipts.
+      </p>
+      <div class="demo-creds">
+        Username: medical<br>
+        PIN: 5678
+      </div>
+      <ul class="card-features">
+        <li>Real-time incoming doctor prescriptions</li>
+        <li>Automatic inventory stock deduction</li>
+        <li>GST & billing receipts (Print / PDF)</li>
+        <li>Payment notifications sent to Doctor</li>
+      </ul>
+      <a href="/medical" class="btn-launch" style="background: #10b981;">
+        💊 Launch Medical Portal
+      </a>
+    </div>
+
+  </div>
+
+  <div class="system-info-bar">
+    <div>
+      <strong>Central Server Status:</strong> <span style="color: #4ade80;">Active (Online)</span> • <strong>Parcha Counter:</strong> Starting at 300
+    </div>
+    <div style="color: #94a3b8;">
+      Compatible with: Android (PWA) • iOS (Safari) • Windows Desktop
+    </div>
+  </div>
+
+</body>
+</html>

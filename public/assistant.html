@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SIDRA MOTION CLINIC DEMO - Assistant Portal</title>
+  <meta name="theme-color" content="#0d9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --accent: #0284c7;
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Offline Banner */
+    #offline-banner {
+      display: none;
+      background: #dc2626;
+      color: white;
+      text-align: center;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px -2px rgba(13, 148, 136, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .clinic-logo-badge {
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text .role-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.25);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    .btn-user-profile {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Layout Containers */
+    .app-container {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Desktop Sidebar (Windows) */
+    .sidebar {
+      width: 250px;
+      background: white;
+      border-right: 1px solid var(--border-color);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 12px 10px 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 700;
+      border-color: #99f6e4;
+    }
+
+    .nav-item .badge {
+      margin-left: auto;
+      background: #e2e8f0;
+      color: var(--text-main);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .nav-item.active .badge {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Main Content Area */
+    .content-area {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      max-width: 1200px;
+    }
+
+    /* Next Parcha Showcase Banner */
+    .token-hero-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+      border: 1px solid #334155;
+    }
+
+    .token-hero-banner .hero-info h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .token-hero-banner .hero-token {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .token-hero-banner .hero-desc {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-top: 4px;
+    }
+
+    /* Metric Cards Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.08);
+    }
+
+    .metric-card.active-filter {
+      border-color: var(--primary);
+      background: #f0fdfa;
+    }
+
+    .metric-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .metric-val {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .metric-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Tabs / View Switching */
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form Container */
+    .form-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      max-width: 800px;
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-header h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .patient-type-toggle {
+      display: flex;
+      background: #e2e8f0;
+      padding: 3px;
+      border-radius: 10px;
+    }
+
+    .type-btn {
+      border: none;
+      background: transparent;
+      padding: 7px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .type-btn.active {
+      background: white;
+      color: var(--primary-dark);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    label span.req {
+      color: var(--danger);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+    }
+
+    /* Duplicate Patient Alert */
+    .dup-alert-box {
+      display: none;
+      background: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+
+    .dup-alert-box h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dup-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .dup-item {
+      background: white;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #fef3c7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .dup-btn-select {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    /* Primary Big Button */
+    .btn-save-send {
+      width: 100%;
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      box-shadow: 0 8px 20px -4px rgba(13, 148, 136, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-save-send:hover {
+      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -4px rgba(13, 148, 136, 0.5);
+    }
+
+    .btn-save-send:active {
+      transform: translateY(0);
+    }
+
+    /* Queue Table & Cards */
+    .queue-container {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    .queue-toolbar {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      background: #f8fafc;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .queue-toolbar h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      background: #e2e8f0;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+
+    .filter-pill.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Desktop Table */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.queue-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    table.queue-table th {
+      background: #f8fafc;
+      padding: 14px 18px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    table.queue-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+
+    table.queue-table tr:hover {
+      background: #f8fafc;
+    }
+
+    .token-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .patient-main-name {
+      font-weight: 700;
+      color: var(--text-main);
+      display: block;
+    }
+
+    .patient-sub-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-WAITING {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .status-CALLED {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      animation: alertPulse 1.5s infinite;
+    }
+
+    @keyframes alertPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .status-WITH-DOCTOR {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+
+    .status-COMPLETED {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .status-NO-SHOW {
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Action Dropdown / Button in table */
+    .queue-action-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: white;
+      font-weight: 700;
+      cursor: pointer;
+      color: #334155;
+    }
+
+    .queue-action-btn:hover {
+      background: #f1f5f9;
+    }
+
+    /* Search View */
+    .search-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input-wrap input {
+      padding-left: 44px;
+      font-size: 1.05rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    /* Modal / High-Priority Next Patient Alert */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .alert-dialog {
+      background: white;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.4);
+      border: 3px solid #ef4444;
+      animation: alertBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes alertBounce {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .alert-bell-icon {
+      width: 72px;
+      height: 72px;
+      background: #fee2e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 2.2rem;
+      color: #ef4444;
+      animation: ring 1s infinite alternate;
+    }
+
+    @keyframes ring {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(12deg); }
+    }
+
+    .alert-dialog h3 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #991b1b;
+      margin-bottom: 8px;
+    }
+
+    .alert-parcha-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #0369a1;
+      background: #f0f9ff;
+      border: 2px dashed #38bdf8;
+      border-radius: 12px;
+      padding: 10px;
+      margin: 14px 0;
+      display: block;
+    }
+
+    .alert-patient-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .alert-instruction {
+      font-size: 1rem;
+      color: #475569;
+      margin-bottom: 24px;
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .btn-acknowledge {
+      width: 100%;
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 20px -3px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-acknowledge:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+
+    /* Mobile Bottom Navigation (Android & iOS) */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid var(--border-color);
+      z-index: 99;
+      padding: 8px 12px 14px;
+      justify-content: space-around;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .mobile-nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      padding: 6px 0;
+    }
+
+    .mobile-nav-btn.active {
+      color: var(--primary);
+    }
+
+    .mobile-nav-icon {
+      font-size: 1.3rem;
+    }
+
+    /* Toast Notification */
+    #toast-msg {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      background: #1e293b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 10001;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    #toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Mobile Responsive Overrides */
+    @media (max-width: 860px) {
+      .sidebar {
+        display: none;
+      }
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      .content-area {
+        padding: 16px;
+        padding-bottom: 90px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      .token-hero-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Offline Warning Banner -->
+  <div id="offline-banner">
+    ⚠️ OFFLINE MODE: Connection lost. Preserving entered patient data locally. Will sync safely on reconnect.
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-area">
+      <div class="clinic-logo-badge">SM</div>
+      <div class="brand-text">
+        <h1>SIDRA MOTION CLINIC DEMO</h1>
+        <span class="role-badge">Assistant / Reception</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="live-status" id="ws-status-badge">
+        <span class="live-dot" id="ws-dot"></span>
+        <span id="ws-label">Live Sync</span>
+      </div>
+      <button class="btn-user-profile" id="user-display-btn" onclick="openLoginModal()">
+        👤 Pooja (Assistant)
+      </button>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+    
+    <!-- Desktop Sidebar (Windows Optimized) -->
+    <aside class="sidebar">
+      <div class="sidebar-section-title">Navigation</div>
+      
+      <div class="nav-item active" onclick="switchTab('queue')">
+        <span>📋 Today's Queue</span>
+        <span class="badge" id="nav-badge-queue">3</span>
+      </div>
+
+      <div class="nav-item" onclick="switchTab('new-patient')">
+        <span>➕ Register Patient</span>
+      </div>
+
+      <div class="nav-item" onclick="switchTab('search')">
+        <span>🔍 Search Patient</span>
+      </div>
+
+      <div class="sidebar-section-title">Clinic Controls</div>
+
+      <div class="nav-item" onclick="testNextPatientAlert()">
+        <span>🔔 Test Alert Sound</span>
+      </div>
+
+      <div class="nav-item" onclick="window.open('/', '_blank')">
+        <span>🌐 Clinic Hub / Doctor</span>
+      </div>
+
+      <div style="margin-top: auto; padding: 12px 10px; background: #f8fafc; border-radius: 10px; font-size: 0.75rem; color: #64748b;">
+        <strong>Role Protection:</strong> Assistant cannot edit prescriptions or view financial reports.
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+
+      <!-- Hero Parcha Token Banner -->
+      <div class="token-hero-banner">
+        <div class="hero-info">
+          <h2>CURRENT TOKEN COUNTER</h2>
+          <div class="hero-desc">All new registrations start from <strong>Parcha 300</strong> and automatically sequence upward.</div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.78rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.05em;">Upcoming Token</span>
+          <div class="hero-token" id="hero-next-parcha">PARCHA NO. 303</div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Counters -->
+      <div class="metrics-grid">
+        <div class="metric-card" onclick="filterQueue('ALL')">
+          <span class="metric-title">Today's Patients</span>
+          <span class="metric-val" id="stat-total">3</span>
+          <span class="metric-sub">Registered today</span>
+        </div>
+        <div class="metric-card active-filter" id="card-waiting" onclick="filterQueue('WAITING')">
+          <span class="metric-title">Waiting</span>
+          <span class="metric-val" style="color: #d97706;" id="stat-waiting">3</span>
+          <span class="metric-sub">Ready for Doctor</span>
+        </div>
+        <div class="metric-card" id="card-called" onclick="filterQueue('CALLED')">
+          <span class="metric-title">Called</span>
+          <span class="metric-val" style="color: #dc2626;" id="stat-called">0</span>
+          <span class="metric-sub">Moving to Doctor</span>
+        </div>
+        <div class="metric-card" id="card-completed" onclick="filterQueue('COMPLETED')">
+          <span class="metric-title">Completed</span>
+          <span class="metric-val" style="color: #16a34a;" id="stat-completed">0</span>
+          <span class="metric-sub">Consulted today</span>
+        </div>
+      </div>
+
+      <!-- VIEW 1: TODAY'S QUEUE -->
+      <section id="view-queue" class="view-panel active">
+        <div class="queue-container">
+          <div class="queue-toolbar">
+            <h3>Live Patient Queue</h3>
+            <div class="filter-pills">
+              <button class="filter-pill active" onclick="setFilterPill('ALL', this)">All</button>
+              <button class="filter-pill" onclick="setFilterPill('WAITING', this)">Waiting</button>
+              <button class="filter-pill" onclick="setFilterPill('CALLED', this)">Called</button>
+              <button class="filter-pill" onclick="setFilterPill('WITH DOCTOR', this)">With Doctor</button>
+              <button class="filter-pill" onclick="setFilterPill('COMPLETED', this)">Completed</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th>Token / Parcha</th>
+                  <th>Patient Details</th>
+                  <th>Contact</th>
+                  <th>Arrival Time</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="queue-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: NEW / EXISTING PATIENT REGISTRATION -->
+      <section id="view-new-patient" class="view-panel">
+        <div class="form-card">
+          <div class="form-header">
+            <div>
+              <h2 id="form-heading">Register Patient</h2>
+              <p style="font-size: 0.85rem; color: #64748b;">Save and immediately send patient to Doctor's live queue</p>
+            </div>
+            <div class="patient-type-toggle">
+              <button class="type-btn active" id="btn-toggle-new" onclick="setPatientType('NEW')">NEW PATIENT</button>
+              <button class="type-btn" id="btn-toggle-exist" onclick="setPatientType('EXISTING')">EXISTING</button>
+            </div>
+          </div>
+
+          <!-- Live Duplicate Detection Warning Box -->
+          <div class="dup-alert-box" id="duplicate-warning-box">
+            <h4>⚠️ Possible Existing Patient Found</h4>
+            <div style="font-size: 0.85rem; color: #78350f;">
+              A patient matching this phone number or name already exists in clinic records. Click below to reuse their profile:
+            </div>
+            <div class="dup-list" id="duplicate-results-list"></div>
+          </div>
+
+          <form id="patient-reg-form" onsubmit="handlePatientSubmit(event)">
+            <input type="hidden" id="form-is-existing" value="false">
+            <input type="hidden" id="form-existing-id" value="">
+
+            <div class="form-grid">
+              
+              <!-- WhatsApp Phone (Primary Search / Dup Check) -->
+              <div class="form-group">
+                <label>WhatsApp Number <span class="req">*</span></label>
+                <input type="tel" id="reg-whatsapp" placeholder="+91 98765 43210" required oninput="checkDuplicateDebounced()">
+              </div>
+
+              <!-- Full Name -->
+              <div class="form-group">
+                <label>Patient Full Name <span class="req">*</span></label>
+                <input type="text" id="reg-fullname" placeholder="e.g. Ramesh Kumar Verma" required oninput="checkDuplicateDebounced()">
+              </div>
+
+              <!-- Age -->
+              <div class="form-group">
+                <label>Age (Years) <span class="req">*</span></label>
+                <input type="number" id="reg-age" placeholder="e.g. 34" min="0" max="120" required>
+              </div>
+
+              <!-- Gender -->
+              <div class="form-group">
+                <label>Gender <span class="req">*</span></label>
+                <select id="reg-gender" required>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <!-- Weight -->
+              <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="reg-weight" placeholder="e.g. 68" step="0.5" min="1" max="300">
+              </div>
+
+              <!-- Blood Group -->
+              <div class="form-group">
+                <label>Blood Group</label>
+                <select id="reg-blood">
+                  <option value="Unknown">Unknown / Not Tested</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+
+              <!-- Address -->
+              <div class="form-group full-width">
+                <label>Address / Area</label>
+                <input type="text" id="reg-address" placeholder="e.g. Sector 4, Vikas Nagar, Lucknow">
+              </div>
+
+              <!-- Chief Complaint -->
+              <div class="form-group full-width">
+                <label>Chief Complaint / Reason for Visit</label>
+                <textarea id="reg-complaint" rows="2" placeholder="e.g. High fever, cough and cold since 3 days"></textarea>
+              </div>
+
+            </div>
+
+            <!-- Big Action Button -->
+            <button type="submit" class="btn-save-send" id="btn-submit-registration">
+              <span>🚀 SAVE & SEND TO DOCTOR</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW 3: SEARCH PATIENTS -->
+      <section id="view-search" class="view-panel">
+        <div class="search-card">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="patient-search-input" placeholder="Search by Patient Name, Phone, Patient ID or Parcha Number..." oninput="executePatientSearch()">
+          </div>
+        </div>
+
+        <div class="queue-container">
+          <div class="queue-toolbar">
+            <h3>Registered Patients Database</h3>
+            <span style="font-size: 0.85rem; color: #64748b;" id="search-count-label">Showing all records</span>
+          </div>
+          <div class="table-responsive">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th>Patient ID</th>
+                  <th>Full Name</th>
+                  <th>Age / Gender</th>
+                  <th>WhatsApp</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="search-results-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation (Android & iOS) -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" id="mob-nav-queue" onclick="switchTab('queue')">
+      <span class="mobile-nav-icon">📋</span>
+      <span>Queue</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-nav-new" onclick="switchTab('new-patient')">
+      <span class="mobile-nav-icon">➕</span>
+      <span>New Patient</span>
+    </button>
+    <button class="mobile-nav-btn" id="mob-nav-search" onclick="switchTab('search')">
+      <span class="mobile-nav-icon">🔍</span>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="testNextPatientAlert()">
+      <span class="mobile-nav-icon">🔔</span>
+      <span>Alert Test</span>
+    </button>
+  </nav>
+
+  <!-- Modal Dialog: High-Priority Next Patient Alert -->
+  <div class="modal-overlay" id="next-patient-modal">
+    <div class="alert-dialog">
+      <div class="alert-bell-icon">🔔</div>
+      <h3>NEXT PATIENT</h3>
+      <span class="alert-parcha-code" id="modal-parcha-code">PARCHA NO. 300</span>
+      <div class="alert-patient-name" id="modal-patient-name">Patient Name</div>
+      <div class="alert-instruction">
+        <strong>Dr. A. K. Sharma</strong> is ready in consultation room.<br>
+        <em>"Please send the patient to the doctor."</em>
+      </div>
+      <button class="btn-acknowledge" id="btn-ack-alert" onclick="acknowledgeNextPatient()">
+        ✓ ACKNOWLEDGE & SEND
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toast-msg">Notification message</div>
+
+  <!-- Client-side Audio Synthesizer & Logic Script -->
+  <script>
+    // State management
+    const state = {
+      token: "u_assistant_1",
+      user: { id: "u_assistant_1", name: "Pooja Verma", role: "ASSISTANT" },
+      visits: [],
+      nextParchaNumber: 300,
+      activeFilter: 'ALL',
+      activeTab: 'queue',
+      currentAlertVisit: null,
+      audioCtx: null
+    };
+
+    // Synthesized Loud Chime for Next Patient Alert
+    function playNextPatientSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!state.audioCtx) {
+          state.audioCtx = new AudioContext();
+        }
+        if (state.audioCtx.state === 'suspended') {
+          state.audioCtx.resume();
+        }
+
+        const now = state.audioCtx.currentTime;
+        
+        // Multi-frequency alert chime
+        const freqs = [587.33, 880.00, 1174.66, 880.00, 1318.51];
+        freqs.forEach((freq, idx) => {
+          const osc = state.audioCtx.createOscillator();
+          const gain = state.audioCtx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+
+          gain.gain.setValueAtTime(0.001, now + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.5, now + idx * 0.14 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.35);
+
+          osc.connect(gain);
+          gain.connect(state.audioCtx.destination);
+
+          osc.start(now + idx * 0.14);
+          osc.stop(now + idx * 0.14 + 0.36);
+        });
+      } catch (e) {
+        console.warn('Audio play error:', e);
+      }
+    }
+
+    // Android/Mobile Vibration
+    function triggerVibration() {
+      if ('vibrate' in navigator) {
+        try {
+          navigator.vibrate([400, 150, 400, 150, 600]);
+        } catch (e) {
+          console.log('Vibration error:', e);
+        }
+      }
+    }
+
+    // Show Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      const activePanel = document.getElementById(`view-${tabId}`);
+      if (activePanel) activePanel.classList.add('active');
+
+      // Update desktop sidebar nav
+      document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+      const navItem = Array.from(document.querySelectorAll('.sidebar .nav-item')).find(el => el.innerText.toLowerCase().includes(tabId === 'new-patient' ? 'register' : tabId));
+      if (navItem) navItem.classList.add('active');
+
+      // Update mobile bottom nav
+      document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+      const mobBtn = document.getElementById(tabId === 'queue' ? 'mob-nav-queue' : tabId === 'new-patient' ? 'mob-nav-new' : 'mob-nav-search');
+      if (mobBtn) mobBtn.classList.add('active');
+
+      if (tabId === 'search') {
+        executePatientSearch();
+      }
+    }
+
+    // Patient Type Switcher (New vs Existing)
+    function setPatientType(type) {
+      const isExist = (type === 'EXISTING');
+      document.getElementById('form-is-existing').value = isExist ? 'true' : 'false';
+      document.getElementById('btn-toggle-new').classList.toggle('active', !isExist);
+      document.getElementById('btn-toggle-exist').classList.toggle('active', isExist);
+      document.getElementById('form-heading').innerText = isExist ? 'Existing Patient Visit' : 'Register New Patient';
+
+      if (isExist) {
+        showToast('Type phone or name to quickly pull existing patient profile');
+      } else {
+        document.getElementById('form-existing-id').value = '';
+        document.getElementById('patient-reg-form').reset();
+      }
+    }
+
+    // Fetch and render Queue & Stats
+    async function loadQueueData() {
+      try {
+        const [visitsRes, statsRes] = await Promise.all([
+          fetch('/api/visits'),
+          fetch('/api/assistant/stats')
+        ]);
+
+        if (visitsRes.ok) {
+          state.visits = await visitsRes.json();
+          renderQueue();
+        }
+
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          document.getElementById('stat-total').innerText = stats.totalPatients;
+          document.getElementById('stat-waiting').innerText = stats.waitingPatients;
+          document.getElementById('stat-called').innerText = stats.calledPatients;
+          document.getElementById('stat-completed').innerText = stats.completedPatients;
+          document.getElementById('nav-badge-queue').innerText = stats.waitingPatients;
+          document.getElementById('hero-next-parcha').innerText = `PARCHA NO. ${stats.nextParchaNumber}`;
+          state.nextParchaNumber = stats.nextParchaNumber;
+        }
+      } catch (err) {
+        console.error('Error loading queue:', err);
+      }
+    }
+
+    // Render Queue Table
+    function renderQueue() {
+      const tbody = document.getElementById('queue-tbody');
+      tbody.innerHTML = '';
+
+      let filtered = state.visits;
+      if (state.activeFilter !== 'ALL') {
+        filtered = state.visits.filter(v => v.status === state.activeFilter);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 36px; color: #94a3b8;">
+              No patients in ${state.activeFilter === 'ALL' ? 'queue' : state.activeFilter} status.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(visit => {
+        const tr = document.createElement('tr');
+        const timeFormatted = new Date(visit.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        let statusBadgeClass = `status-${visit.status.replace(/\s+/g, '-')}`;
+
+        tr.innerHTML = `
+          <td>
+            <span class="token-badge">${visit.parchaCode}</span>
+          </td>
+          <td>
+            <span class="patient-main-name">${visit.patientName}</span>
+            <div class="patient-sub-meta">
+              ${visit.age}y / ${visit.gender} • ${visit.weight ? visit.weight + 'kg' : ''} • Blood: ${visit.bloodGroup || 'N/A'}
+            </div>
+            <div style="font-size: 0.76rem; color: #0284c7; margin-top: 3px;">
+              Reason: ${visit.chiefComplaint || 'Consultation'}
+            </div>
+          </td>
+          <td>
+            <div style="font-weight: 600;">${visit.whatsapp || 'N/A'}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">${visit.address || 'Lucknow'}</div>
+          </td>
+          <td>
+            <span style="font-weight: 600;">${timeFormatted}</span>
+          </td>
+          <td>
+            <span class="status-badge ${statusBadgeClass}">
+              ${visit.status}
+            </span>
+          </td>
+          <td>
+            <select class="queue-action-btn" onchange="changeQueueStatus('${visit.id}', this.value)">
+              <option value="" disabled selected>Change Status</option>
+              <option value="WAITING" ${visit.status === 'WAITING' ? 'selected' : ''}>WAITING</option>
+              <option value="CALLED" ${visit.status === 'CALLED' ? 'selected' : ''}>CALLED</option>
+              <option value="NO SHOW" ${visit.status === 'NO SHOW' ? 'selected' : ''}>NO SHOW</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Filter Queue
+    function filterQueue(status) {
+      state.activeFilter = status;
+      document.querySelectorAll('.metric-card').forEach(c => c.classList.remove('active-filter'));
+      if (status === 'WAITING') document.getElementById('card-waiting')?.classList.add('active-filter');
+      if (status === 'CALLED') document.getElementById('card-called')?.classList.add('active-filter');
+      if (status === 'COMPLETED') document.getElementById('card-completed')?.classList.add('active-filter');
+      renderQueue();
+    }
+
+    function setFilterPill(status, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      filterQueue(status);
+    }
+
+    // Change Queue Status (Assistant Allowed: WAITING, CALLED, NO SHOW)
+    async function changeQueueStatus(visitId, newStatus) {
+      try {
+        const res = await fetch(`/api/queue/${visitId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify({ status: newStatus, platform: 'Assistant Portal' })
+        });
+        if (res.ok) {
+          showToast(`Status changed to ${newStatus}`);
+          loadQueueData();
+        } else {
+          const err = await res.json();
+          alert(err.error || 'Permission error');
+        }
+      } catch (e) {
+        console.error('Update status error:', e);
+      }
+    }
+
+    // Debounced Duplicate Check
+    let dupTimer = null;
+    function checkDuplicateDebounced() {
+      clearTimeout(dupTimer);
+      dupTimer = setTimeout(performDuplicateCheck, 300);
+      saveFormDraft();
+    }
+
+    async function performDuplicateCheck() {
+      const phone = document.getElementById('reg-whatsapp').value.trim();
+      const name = document.getElementById('reg-fullname').value.trim();
+
+      if (phone.length < 5 && name.length < 3) {
+        document.getElementById('duplicate-warning-box').style.display = 'none';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/patients/check-duplicate?phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name)}`);
+        if (res.ok) {
+          const data = await res.json();
+          const box = document.getElementById('duplicate-warning-box');
+          const list = document.getElementById('duplicate-results-list');
+          list.innerHTML = '';
+
+          if (data.duplicates && data.duplicates.length > 0) {
+            box.style.display = 'block';
+            data.duplicates.slice(0, 3).forEach(p => {
+              const item = document.createElement('div');
+              item.className = 'dup-item';
+              item.innerHTML = `
+                <div>
+                  <strong>${p.fullName}</strong> (${p.id}) • Age: ${p.age} • Phone: ${p.whatsapp}
+                </div>
+                <button type="button" class="dup-btn-select" onclick="selectExistingPatient('${p.id}', '${p.fullName.replace(/'/g, "\\'")}', '${p.age}', '${p.gender}', '${p.whatsapp}', '${(p.address||'').replace(/'/g, "\\'")}', '${p.bloodGroup||''}', '${p.weight||''}')">
+                  Use This Patient
+                </button>
+              `;
+              list.appendChild(item);
+            });
+          } else {
+            box.style.display = 'none';
+          }
+        }
+      } catch (err) {
+        console.error('Duplicate check error:', err);
+      }
+    }
+
+    function selectExistingPatient(id, name, age, gender, phone, address, blood, weight) {
+      document.getElementById('form-is-existing').value = 'true';
+      document.getElementById('form-existing-id').value = id;
+      document.getElementById('reg-fullname').value = name;
+      document.getElementById('reg-age').value = age;
+      document.getElementById('reg-gender').value = gender;
+      document.getElementById('reg-whatsapp').value = phone;
+      document.getElementById('reg-address').value = address || '';
+      document.getElementById('reg-blood').value = blood || 'Unknown';
+      document.getElementById('reg-weight').value = weight || '';
+      
+      document.getElementById('duplicate-warning-box').style.display = 'none';
+      setPatientType('EXISTING');
+      showToast(`Selected existing patient: ${name} (${id})`);
+    }
+
+    // Save Patient & Send to Doctor
+    async function handlePatientSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-registration');
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳ SENDING TO DOCTOR QUEUE...</span>`;
+
+      const isExisting = document.getElementById('form-is-existing').value === 'true';
+      const existingPatientId = document.getElementById('form-existing-id').value;
+
+      const payload = {
+        isExisting,
+        existingPatientId,
+        fullName: document.getElementById('reg-fullname').value.trim(),
+        age: document.getElementById('reg-age').value,
+        gender: document.getElementById('reg-gender').value,
+        whatsapp: document.getElementById('reg-whatsapp').value.trim(),
+        address: document.getElementById('reg-address').value.trim(),
+        bloodGroup: document.getElementById('reg-blood').value,
+        weight: document.getElementById('reg-weight').value,
+        chiefComplaint: document.getElementById('reg-complaint').value.trim() || 'General Consultation',
+        platform: window.innerWidth < 860 ? 'Android / Mobile Assistant' : 'Windows Assistant'
+      };
+
+      try {
+        const res = await fetch('/api/assistant/register-and-send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`SUCCESS! ${data.parchaCode} sent to Doctor Queue.`);
+          
+          // Clear draft from localStorage
+          localStorage.removeItem('assistant_form_draft');
+          document.getElementById('patient-reg-form').reset();
+          document.getElementById('form-is-existing').value = 'false';
+          document.getElementById('form-existing-id').value = '';
+          document.getElementById('duplicate-warning-box').style.display = 'none';
+
+          // Refresh queue immediately
+          await loadQueueData();
+          switchTab('queue');
+        } else {
+          alert(data.error || 'Failed to register patient');
+        }
+      } catch (err) {
+        console.error('Registration error:', err);
+        showToast('Network error: Stored draft locally.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>🚀 SAVE & SEND TO DOCTOR</span>`;
+      }
+    }
+
+    // Form Draft Persistence for Offline Resilience
+    function saveFormDraft() {
+      const draft = {
+        name: document.getElementById('reg-fullname').value,
+        phone: document.getElementById('reg-whatsapp').value,
+        age: document.getElementById('reg-age').value,
+        gender: document.getElementById('reg-gender').value,
+        address: document.getElementById('reg-address').value,
+        complaint: document.getElementById('reg-complaint').value
+      };
+      localStorage.setItem('assistant_form_draft', JSON.stringify(draft));
+    }
+
+    function restoreFormDraft() {
+      try {
+        const draft = JSON.parse(localStorage.getItem('assistant_form_draft') || '{}');
+        if (draft.name) document.getElementById('reg-fullname').value = draft.name;
+        if (draft.phone) document.getElementById('reg-whatsapp').value = draft.phone;
+        if (draft.age) document.getElementById('reg-age').value = draft.age;
+        if (draft.gender) document.getElementById('reg-gender').value = draft.gender;
+        if (draft.address) document.getElementById('reg-address').value = draft.address;
+        if (draft.complaint) document.getElementById('reg-complaint').value = draft.complaint;
+      } catch (e) {}
+    }
+
+    // Next Patient Alert Modal & Acknowledgement
+    function showNextPatientAlert(payload) {
+      state.currentAlertVisit = payload;
+      document.getElementById('modal-parcha-code').innerText = payload.parchaNumber || `PARCHA NO. ${payload.tokenNumber}`;
+      document.getElementById('modal-patient-name').innerText = payload.patientName;
+      document.getElementById('next-patient-modal').classList.add('active');
+
+      // Loud sound + vibration
+      playNextPatientSound();
+      triggerVibration();
+    }
+
+    async function acknowledgeNextPatient() {
+      if (!state.currentAlertVisit) return;
+      const visitId = state.currentAlertVisit.visitId;
+
+      try {
+        const res = await fetch('/api/assistant/acknowledge-alert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify({
+            visitId,
+            platform: window.innerWidth < 860 ? 'Android Assistant' : 'Windows Assistant'
+          })
+        });
+
+        if (res.ok) {
+          document.getElementById('next-patient-modal').classList.remove('active');
+          showToast('✓ Doctor notified that patient is sent.');
+          state.currentAlertVisit = null;
+          loadQueueData();
+        }
+      } catch (err) {
+        console.error('Ack error:', err);
+        document.getElementById('next-patient-modal').classList.remove('active');
+      }
+    }
+
+    function testNextPatientAlert() {
+      showNextPatientAlert({
+        visitId: 'v_300',
+        parchaNumber: 'PARCHA NO. 300',
+        tokenNumber: 300,
+        patientName: 'Rajesh Kumar Srivastava'
+      });
+    }
+
+    // Search Patient in Database
+    async function executePatientSearch() {
+      const q = document.getElementById('patient-search-input').value.trim();
+      try {
+        const res = await fetch(`/api/patients/search?q=${encodeURIComponent(q)}`);
+        if (res.ok) {
+          const patients = await res.json();
+          const tbody = document.getElementById('search-results-tbody');
+          tbody.innerHTML = '';
+          document.getElementById('search-count-label').innerText = `Found ${patients.length} patient(s)`;
+
+          patients.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><span class="token-badge">${p.id}</span></td>
+              <td><strong>${p.fullName}</strong></td>
+              <td>${p.age}y / ${p.gender}</td>
+              <td>${p.whatsapp}</td>
+              <td>${p.address || 'N/A'}</td>
+              <td>
+                <button class="queue-action-btn" onclick="selectExistingPatient('${p.id}', '${p.fullName.replace(/'/g, "\\'")}', '${p.age}', '${p.gender}', '${p.whatsapp}', '${(p.address||'').replace(/'/g, "\\'")}', '${p.bloodGroup||''}', '${p.weight||''}')">
+                  ➕ New Visit
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      } catch (e) {
+        console.error('Search error:', e);
+      }
+    }
+
+    // WebSocket Real-time Engine
+    function initWebSocket() {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}`;
+      const ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        document.getElementById('ws-dot').style.background = '#4ade80';
+        document.getElementById('ws-label').innerText = 'Live Sync';
+        document.getElementById('offline-banner').style.display = 'none';
+      };
+
+      ws.onclose = () => {
+        document.getElementById('ws-dot').style.background = '#f87171';
+        document.getElementById('ws-label').innerText = 'Offline';
+        document.getElementById('offline-banner').style.display = 'block';
+        // Auto-reconnect in 3s
+        setTimeout(initWebSocket, 3000);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data.event === 'NEXT_PATIENT_ALERT') {
+            showNextPatientAlert(data.payload);
+            loadQueueData();
+          } else if (data.event === 'NEW_PATIENT_ARRIVED' || data.event === 'QUEUE_STATUS_UPDATED') {
+            loadQueueData();
+          }
+        } catch (e) {
+          console.error('WS Message error:', e);
+        }
+      };
+    }
+
+    // Online / Offline window listeners
+    window.addEventListener('online', () => {
+      document.getElementById('offline-banner').style.display = 'none';
+      loadQueueData();
+    });
+    window.addEventListener('offline', () => {
+      document.getElementById('offline-banner').style.display = 'block';
+    });
+
+    // Keyboard Shortcuts (Windows UX)
+    window.addEventListener('keydown', (e) => {
+      if (e.altKey && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        switchTab('new-patient');
+      } else if (e.altKey && e.key.toLowerCase() === 'q') {
+        e.preventDefault();
+        switchTab('queue');
+      } else if (e.key === 'Escape') {
+        document.getElementById('next-patient-modal').classList.remove('active');
+      }
+    });
+
+    // Initial Setup
+    window.addEventListener('DOMContentLoaded', () => {
+      restoreFormDraft();
+      loadQueueData();
+      initWebSocket();
+    });
+  </script>
+</body>
+</html>

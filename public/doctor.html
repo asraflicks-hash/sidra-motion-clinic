@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SIDRA MOTION CLINIC DEMO - Doctor / Admin Master Console</title>
+  <meta name="theme-color" content="#0284c7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --teal: #0d9488;
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Master Header */
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border-bottom: 2px solid #0284c7;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .brand-title h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title .master-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      background: #0284c7;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    /* Role Switcher (Doctor, Assistant, Medical) */
+    .role-switcher-container {
+      display: flex;
+      align-items: center;
+      background: #1e293b;
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
+
+    .role-switch-btn {
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .role-switch-btn.active {
+      background: #0284c7;
+      color: white;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+    }
+
+    .role-switch-btn:hover:not(.active) {
+      color: white;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .header-user-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    /* Main Container */
+    .app-body {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Windows Sidebar */
+    .sidebar {
+      width: 240px;
+      background: white;
+      border-right: 1px solid var(--border);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sidebar-heading {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 12px 10px 4px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      border: 1px solid transparent;
+    }
+
+    .sidebar-link:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .sidebar-link.active {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+      border-color: #bae6fd;
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: #e2e8f0;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .sidebar-link.active .sidebar-badge {
+      background: #0284c7;
+      color: white;
+    }
+
+    /* Main Work Area */
+    .workspace {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    /* Big "NEXT PATIENT" Call Action Bar */
+    .hero-call-bar {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1.5px solid #334155;
+      border-radius: 18px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+      flex-wrap: wrap;
+    }
+
+    .hero-call-info h2 {
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-call-info p {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .ack-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #34d399;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    /* GIANT NEXT PATIENT BUTTON */
+    .btn-next-patient-hero {
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      color: white;
+      border: none;
+      padding: 18px 36px;
+      border-radius: 14px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px -3px rgba(239, 68, 68, 0.5);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-next-patient-hero:hover {
+      transform: scale(1.03);
+      box-shadow: 0 14px 30px -3px rgba(239, 68, 68, 0.6);
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    }
+
+    .btn-next-patient-hero:active {
+      transform: scale(0.98);
+    }
+
+    /* Metrics Grid */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .metric-box {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .metric-lbl {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .metric-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* Consultation Workspace Split Panes */
+    .consultation-split {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+    }
+
+    /* Left Pane: Queue & History */
+    .queue-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .queue-list-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    .queue-item-card {
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .queue-item-card:hover {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .queue-item-card.selected {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
+    }
+
+    .queue-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .item-parcha {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #0369a1;
+      background: white;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #bae6fd;
+    }
+
+    .item-patient-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .item-details {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Right Pane: Active Consultation & Rx */
+    .active-consultation-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .patient-hero-summary {
+      background: white;
+      border-radius: 16px;
+      padding: 18px 22px;
+      border: 1.5px solid #bae6fd;
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .pt-main-info h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0c4a6e;
+    }
+
+    .pt-meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pt-badge {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .btn-start-consult {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-start-consult:hover {
+      background: #059669;
+    }
+
+    /* Form Grids */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group.full {
+      grid-column: span 2;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+    }
+
+    /* Medicine Search Autocomplete */
+    .med-search-wrap {
+      position: relative;
+    }
+
+    .med-dropdown-results {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1.5px solid #0284c7;
+      border-radius: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 50;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      margin-top: 4px;
+    }
+
+    .med-result-row {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      font-size: 0.88rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .med-result-row:hover {
+      background: #f0f9ff;
+    }
+
+    /* Medicine Table */
+    .rx-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    .rx-table th {
+      background: #f8fafc;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rx-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .btn-remove-row {
+      background: #fee2e2;
+      color: #ef4444;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    /* Big Submit Buttons */
+    .action-button-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-save-send-rx {
+      flex: 2;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-save-send-rx:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-print {
+      flex: 1;
+      background: white;
+      border: 1.5px solid #0284c7;
+      color: #0284c7;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline-print:hover {
+      background: #f0f9ff;
+    }
+
+    /* Template Designer & Print Preview Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 26px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Prescription Sheet Preview */
+    .prescription-sheet-container {
+      background: #64748b;
+      padding: 24px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    .paper-sheet {
+      width: 600px;
+      min-height: 800px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .paper-sheet.pre-printed-mode {
+      background: #fafafa !important;
+    }
+
+    .paper-sheet.pre-printed-mode .letterhead-art {
+      visibility: hidden !important; /* Hide letterhead for pre-printed physical paper */
+    }
+
+    /* Print Media Query */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+
+    /* Toast */
+    #toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 10001;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    #toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .sidebar { display: none; }
+      .consultation-split { grid-template-columns: 1fr; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      .hero-call-bar { flex-direction: column; text-align: center; }
+      .btn-next-patient-hero { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Master Bar -->
+  <header>
+    <div class="brand-section">
+      <div class="logo-box">DR</div>
+      <div class="brand-title">
+        <h1>SIDRA MOTION CLINIC DEMO</h1>
+        <span class="master-badge">Doctor / Admin Master Console</span>
+      </div>
+    </div>
+
+    <!-- Role Switcher: Doctor has access to all 3 modules -->
+    <div class="role-switcher-container">
+      <a href="/doctor" class="role-switch-btn active">👨‍⚕️ DOCTOR</a>
+      <a href="/assistant" class="role-switch-btn">📋 ASSISTANT</a>
+      <a href="/medical" class="role-switch-btn">💊 MEDICAL / BILLING</a>
+    </div>
+
+    <div class="header-user-status">
+      <span class="live-dot" title="Real-time WebSocket Live"></span>
+      <div style="font-size: 0.85rem; font-weight: 700;">Dr. A. K. Sharma (MD)</div>
+    </div>
+  </header>
+
+  <!-- App Body -->
+  <div class="app-body">
+    
+    <!-- Left Navigation (Windows) -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Clinical Views</div>
+      <div class="sidebar-link active" onclick="switchMainTab('consultation')">
+        <span>🩺 Consultation</span>
+      </div>
+      <div class="sidebar-link" onclick="switchMainTab('queue')">
+        <span>📋 Live Queue</span>
+        <span class="sidebar-badge" id="side-queue-count">4</span>
+      </div>
+      <div class="sidebar-link" onclick="openTemplateDesigner()">
+        <span>🎨 Prescription Designer</span>
+      </div>
+      <div class="sidebar-link" onclick="switchMainTab('reports')">
+        <span>📊 Daily Revenue Report</span>
+      </div>
+
+      <div class="sidebar-heading">Master Controls</div>
+      <div class="sidebar-link" onclick="window.open('/assistant', '_blank')">
+        <span>Open Assistant Window</span>
+      </div>
+      <div class="sidebar-link" onclick="window.open('/medical', '_blank')">
+        <span>Open Medical/Billing Window</span>
+      </div>
+
+      <div style="margin-top: auto; padding: 12px; background: #f8fafc; border-radius: 10px; font-size: 0.75rem; color: #64748b;">
+        <strong>Master Privilege:</strong> Full unrestricted access across Consultation, Reception, and Pharmacy.
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <main class="workspace">
+
+      <!-- GIANT NEXT PATIENT CALL BAR -->
+      <section class="hero-call-bar">
+        <div class="hero-call-info">
+          <h2>
+            <span>🚨 CALL QUEUE DISPATCH</span>
+            <span class="ack-status-pill" id="ack-status-indicator">
+              Waiting for Next Patient Call...
+            </span>
+          </h2>
+          <p id="current-called-info">
+            Pressing <strong>NEXT PATIENT</strong> triggers real-time audio and vibration alerts on the Assistant application.
+          </p>
+        </div>
+
+        <button class="btn-next-patient-hero" id="btn-call-next" onclick="callNextPatient()">
+          <span>🔔 NEXT PATIENT</span>
+        </button>
+      </section>
+
+      <!-- Key Dashboard Metrics -->
+      <section class="metrics-row">
+        <div class="metric-box">
+          <span class="metric-lbl">Today's Patients</span>
+          <span class="metric-num" id="dash-total">4</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Waiting Queue</span>
+          <span class="metric-num" style="color: #d97706;" id="dash-waiting">3</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Called</span>
+          <span class="metric-num" style="color: #dc2626;" id="dash-called">1</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Completed</span>
+          <span class="metric-num" style="color: #16a34a;" id="dash-completed">0</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Consultation Fees</span>
+          <span class="metric-num" style="color: #0284c7;" id="dash-fees">₹0</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Medicine Sales</span>
+          <span class="metric-num" style="color: #0d9488;" id="dash-sales">₹0</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-lbl">Total Revenue</span>
+          <span class="metric-num" style="color: #4338ca;" id="dash-revenue">₹0</span>
+        </div>
+      </section>
+
+      <!-- VIEW 1: ACTIVE CONSULTATION & QUEUE SPLIT -->
+      <div id="view-consultation" class="consultation-split">
+        
+        <!-- Left: Queue & Patient Selection -->
+        <div class="queue-pane">
+          <div class="card">
+            <div class="card-title">
+              <span>Patient Queue</span>
+              <span style="font-size: 0.8rem; color: #64748b;" id="queue-count-sub">3 waiting</span>
+            </div>
+            
+            <div class="queue-list-scroll" id="queue-cards-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Patient Visit History Card -->
+          <div class="card" id="history-card" style="display: none;">
+            <div class="card-title">
+              <span>Past Visits History</span>
+            </div>
+            <div id="history-details" style="font-size: 0.82rem; color: #475569;">
+              No previous visits recorded for this patient.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Active Patient Consultation & Prescription Form -->
+        <div class="active-consultation-pane">
+          
+          <!-- Selected Patient Header -->
+          <div class="patient-hero-summary" id="patient-banner">
+            <div class="pt-main-info">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 800; color: #0284c7;" id="active-parcha">PARCHA NO. 300</span>
+              <h3 id="active-name">Rajesh Kumar Srivastava</h3>
+              <div class="pt-meta-badges">
+                <span class="pt-badge" id="active-age-gender">42y / Male</span>
+                <span class="pt-badge" id="active-phone">+91 98765 12345</span>
+                <span class="pt-badge" id="active-blood">B+</span>
+                <span class="pt-badge" id="active-weight">74 kg</span>
+                <span class="pt-badge" id="active-id">SMC-P301</span>
+              </div>
+            </div>
+            <div>
+              <button class="btn-start-consult" id="btn-start-consult-trigger" onclick="startConsultation()">
+                ▶ START CONSULTATION
+              </button>
+            </div>
+          </div>
+
+          <!-- Medical Consultation Form -->
+          <div class="card">
+            <div class="card-title">Clinical Evaluation</div>
+            
+            <div class="form-grid-2">
+              <div class="form-group full">
+                <label>Chief Complaint</label>
+                <input type="text" id="rx-complaint" value="Severe fever and body ache since 2 days">
+              </div>
+
+              <div class="form-group">
+                <label>Symptoms</label>
+                <input type="text" id="rx-symptoms" placeholder="e.g. High fever (102°F), chills, body ache">
+              </div>
+
+              <div class="form-group">
+                <label>Diagnosis <span style="color: #ef4444;">*</span></label>
+                <input type="text" id="rx-diagnosis" value="Acute Viral Fever with Myalgia" required>
+              </div>
+
+              <div class="form-group full">
+                <label>Clinical Notes</label>
+                <textarea id="rx-notes" rows="2" placeholder="Chest clear, throat slightly congested, hydration advised..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medicine Search & Prescription Table -->
+          <div class="card">
+            <div class="card-title">
+              <span>Prescribed Medicines</span>
+              <span style="font-size: 0.8rem; color: #0284c7;">Connected to Central Pharmacy Inventory</span>
+            </div>
+
+            <!-- Instant Medicine Search -->
+            <div class="med-search-wrap">
+              <label>Search Medicine by Name or Generic (Type e.g. "PARA", "Amox", "Pan")</label>
+              <input type="text" id="med-search-input" placeholder="Search medicine in stock..." oninput="searchMedicineLive()">
+              <div class="med-dropdown-results" id="med-search-results"></div>
+            </div>
+
+            <!-- Table of Prescribed Medicines -->
+            <table class="rx-table">
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Strength</th>
+                  <th>Dosage & Frequency</th>
+                  <th>Duration</th>
+                  <th>Instructions</th>
+                  <th>Qty</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="prescribed-meds-tbody">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+
+            <!-- Advice & Follow-up Row -->
+            <div class="form-grid-2" style="margin-top: 18px;">
+              <div class="form-group">
+                <label>Special Advice / Instructions</label>
+                <input type="text" id="rx-advice" value="Drink boiled lukewarm water, rest for 3 days, avoid cold drinks.">
+              </div>
+
+              <div class="form-group">
+                <label>Follow-up Duration</label>
+                <select id="rx-followup" onchange="handleFollowupChange(this.value)">
+                  <option value="3">After 3 Days</option>
+                  <option value="7" selected>After 7 Days</option>
+                  <option value="15">After 15 Days</option>
+                  <option value="30">After 30 Days</option>
+                  <option value="custom">Custom Date</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Action Button Bar -->
+            <div class="action-button-bar">
+              <button class="btn-save-send-rx" onclick="saveAndSendPrescription()">
+                🚀 SAVE & SEND PRESCRIPTION TO MEDICAL
+              </button>
+              <button class="btn-outline-print" onclick="openPrintPreview('FULL_LETTERHEAD')">
+                🖨️ Full Letterhead Print
+              </button>
+              <button class="btn-outline-print" onclick="openPrintPreview('PRE_PRINTED')">
+                📄 Pre-Printed Paper Print
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- VIEW 2: DAILY REVENUE REPORT -->
+      <div id="view-reports" style="display: none;">
+        <div class="card">
+          <div class="card-title">
+            <span>Daily Clinic Financial Summary</span>
+            <button class="btn-outline-print" onclick="window.print()">🖨️ Print Report</button>
+          </div>
+          <div id="daily-report-content" style="padding: 14px 0;">
+            <!-- Rendered from /api/reports/daily -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Prescription Preview & Print Modal -->
+  <div class="modal-overlay" id="print-modal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="print-modal-title">Prescription Print & Template Preview</h3>
+        <button onclick="closePrintModal()" style="border: none; background: #e2e8f0; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 700;">✕ Close</button>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+        <button class="btn-outline-print" style="padding: 8px 16px;" onclick="setPreviewMode('FULL_LETTERHEAD')">Full Letterhead Mode</button>
+        <button class="btn-outline-print" style="padding: 8px 16px;" onclick="setPreviewMode('PRE_PRINTED')">Pre-Printed Paper Mode</button>
+        <button class="btn-save-send-rx" style="padding: 8px 16px;" onclick="triggerPhysicalPrint()">🖨️ Print Now</button>
+        <button class="btn-outline-print" style="padding: 8px 16px; background: #25d366; color: white; border-color: #25d366;" onclick="sendWhatsAppPrescription()">💬 Send on WhatsApp</button>
+      </div>
+
+      <!-- Printable Sheet Simulation -->
+      <div class="prescription-sheet-container">
+        <div class="paper-sheet" id="print-area">
+          
+          <!-- Clinic Header (Hidden in Pre-Printed mode) -->
+          <div class="letterhead-art" style="border-bottom: 2px solid #0d9488; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <h2 style="color: #0d9488; font-size: 1.4rem; font-weight: 800;">SIDRA MOTION CLINIC DEMO</h2>
+              <div style="font-size: 0.8rem; color: #475569; font-weight: 600;">Motion Healthcare Center, Gomti Nagar, Lucknow</div>
+              <div style="font-size: 0.75rem; color: #64748b;">Phone: +91 98765 43210 • Email: info@sidramotionclinic.com</div>
+            </div>
+            <div style="text-align: right;">
+              <h3 style="color: #0f172a; font-size: 1rem; font-weight: 800;">Dr. A. K. Sharma</h3>
+              <div style="font-size: 0.75rem; color: #64748b;">MD, MBBS • Senior Consultant</div>
+              <div style="font-size: 0.75rem; color: #64748b;">Reg No: UP-MED-44821</div>
+            </div>
+          </div>
+
+          <!-- Patient Meta Bar -->
+          <div style="display: flex; justify-content: space-between; background: #f8fafc; padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #e2e8f0; font-size: 0.8rem;">
+            <div><strong>Patient:</strong> <span id="pr-name">Rajesh Kumar</span> (<span id="pr-age-gen">42 / M</span>)</div>
+            <div><strong>Parcha:</strong> <span id="pr-parcha" style="color: #0284c7; font-weight: 800;">PARCHA NO. 300</span></div>
+            <div><strong>Date:</strong> <span id="pr-date">27-Sep-2026</span></div>
+          </div>
+
+          <!-- Diagnosis -->
+          <div style="margin-bottom: 14px;">
+            <strong style="color: #0f172a;">Diagnosis:</strong>
+            <span id="pr-diagnosis" style="font-weight: 700; color: #0284c7;">Acute Viral Fever with Myalgia</span>
+          </div>
+
+          <!-- Rx Symbol -->
+          <div style="font-size: 1.6rem; font-weight: 900; color: #0d9488; margin-bottom: 8px;">℞</div>
+
+          <!-- Medicine Table on Sheet -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.82rem;">
+            <thead>
+              <tr style="border-bottom: 1.5px solid #cbd5e1; text-align: left;">
+                <th style="padding: 6px 0;">Medicine</th>
+                <th>Dosage</th>
+                <th>Frequency</th>
+                <th>Duration</th>
+                <th>Instructions</th>
+              </tr>
+            </thead>
+            <tbody id="pr-meds-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+
+          <!-- Advice -->
+          <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid #e2e8f0;">
+            <strong>Advice:</strong> <span id="pr-advice">Rest for 3 days and drink plenty of fluids.</span>
+          </div>
+          <div style="margin-top: 6px;">
+            <strong>Follow-up:</strong> <span id="pr-followup" style="color: #0369a1; font-weight: 700;">After 7 Days</span>
+          </div>
+
+          <!-- Signature Footer -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 36px;">
+            <div style="font-size: 0.7rem; color: #94a3b8;">
+              Digitally Generated via SIDRA MOTION CLINIC Ecosystem<br>
+              Valid across physical & digital pharmacies.
+            </div>
+            <div style="text-align: center;">
+              <div style="font-family: cursive; font-size: 1.1rem; color: #0f172a;">Dr. A. K. Sharma</div>
+              <div style="border-top: 1px solid #334155; padding-top: 2px; font-size: 0.75rem; font-weight: 700;">Doctor Signature</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-msg">Alert Notification</div>
+
+  <!-- Doctor Console Engine -->
+  <script>
+    const state = {
+      token: "u_doctor_1",
+      user: { id: "u_doctor_1", name: "Dr. A. K. Sharma", role: "DOCTOR" },
+      visits: [],
+      activeVisit: null,
+      prescribedMedicines: [],
+      inventoryCache: [],
+      previewMode: 'FULL_LETTERHEAD'
+    };
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function switchMainTab(tab) {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      if (tab === 'consultation') {
+        document.getElementById('view-consultation').style.display = 'grid';
+        document.getElementById('view-reports').style.display = 'none';
+      } else if (tab === 'reports') {
+        document.getElementById('view-consultation').style.display = 'none';
+        document.getElementById('view-reports').style.display = 'block';
+        loadDailyReport();
+      }
+    }
+
+    // Load Doctor Dashboard Stats & Visits
+    async function loadDoctorData() {
+      try {
+        const [statsRes, visitsRes] = await Promise.all([
+          fetch('/api/doctor/dashboard-stats', { headers: { 'Authorization': `Bearer ${state.token}` } }),
+          fetch('/api/visits')
+        ]);
+
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          document.getElementById('dash-total').innerText = stats.totalPatients;
+          document.getElementById('dash-waiting').innerText = stats.waiting;
+          document.getElementById('dash-called').innerText = stats.called;
+          document.getElementById('dash-completed').innerText = stats.completed;
+          document.getElementById('dash-fees').innerText = `₹${stats.consultationFees}`;
+          document.getElementById('dash-sales').innerText = `₹${stats.medicineSales}`;
+          document.getElementById('dash-revenue').innerText = `₹${stats.totalRevenue}`;
+          document.getElementById('side-queue-count').innerText = stats.waiting;
+          document.getElementById('queue-count-sub').innerText = `${stats.waiting} waiting`;
+        }
+
+        if (visitsRes.ok) {
+          state.visits = await visitsRes.json();
+          renderQueueList();
+        }
+      } catch (e) {
+        console.error('Doctor data load error:', e);
+      }
+    }
+
+    // Render Queue in Left Pane
+    function renderQueueList() {
+      const container = document.getElementById('queue-cards-container');
+      container.innerHTML = '';
+
+      if (state.visits.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">No patients in queue</div>`;
+        return;
+      }
+
+      state.visits.forEach(v => {
+        const card = document.createElement('div');
+        card.className = `queue-item-card ${state.activeVisit && state.activeVisit.id === v.id ? 'selected' : ''}`;
+        card.onclick = () => selectPatientForConsultation(v);
+
+        let statusColor = '#92400e';
+        if (v.status === 'CALLED') statusColor = '#dc2626';
+        if (v.status === 'WITH DOCTOR') statusColor = '#4338ca';
+        if (v.status === 'COMPLETED') statusColor = '#15803d';
+
+        card.innerHTML = `
+          <div class="queue-item-top">
+            <span class="item-parcha">${v.parchaCode}</span>
+            <span style="font-size: 0.72rem; font-weight: 800; color: ${statusColor};">${v.status}</span>
+          </div>
+          <div class="item-patient-name">${v.patientName}</div>
+          <div class="item-details">
+            ${v.age}y / ${v.gender} • ${v.whatsapp}
+          </div>
+          <div style="font-size: 0.74rem; color: #0284c7; margin-top: 4px;">
+            ${v.chiefComplaint || 'Consultation'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Default select the first patient if none selected
+      if (!state.activeVisit && state.visits.length > 0) {
+        selectPatientForConsultation(state.visits[0]);
+      }
+    }
+
+    // Select Patient into Consultation Workspace
+    function selectPatientForConsultation(visit) {
+      state.activeVisit = visit;
+      renderQueueList();
+
+      document.getElementById('active-parcha').innerText = visit.parchaCode;
+      document.getElementById('active-name').innerText = visit.patientName;
+      document.getElementById('active-age-gender').innerText = `${visit.age}y / ${visit.gender}`;
+      document.getElementById('active-phone').innerText = visit.whatsapp;
+      document.getElementById('active-blood').innerText = `Blood: ${visit.bloodGroup || 'N/A'}`;
+      document.getElementById('active-weight').innerText = `${visit.weight || '--'} kg`;
+      document.getElementById('active-id').innerText = visit.patientId;
+      document.getElementById('rx-complaint').value = visit.chiefComplaint || '';
+
+      // Reset prescribed medicines with sensible defaults for demo
+      state.prescribedMedicines = [
+        {
+          id: "med_1",
+          name: "Paracetamol 650 mg (Dolo)",
+          strength: "650 mg",
+          form: "Tablet",
+          dosage: "1 tablet",
+          frequency: "Twice Daily",
+          duration: "3 Days",
+          instructions: "After Food",
+          quantity: 6,
+          sellingPrice: 32.50
+        }
+      ];
+      renderPrescribedMedsTable();
+      loadPatientHistory(visit.patientId);
+    }
+
+    // Load Patient Past History
+    async function loadPatientHistory(patientId) {
+      try {
+        const res = await fetch(`/api/patients/${patientId}/full-history`, {
+          headers: { 'Authorization': `Bearer ${state.token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const card = document.getElementById('history-card');
+          const details = document.getElementById('history-details');
+          card.style.display = 'block';
+
+          if (data.prescriptions && data.prescriptions.length > 0) {
+            details.innerHTML = data.prescriptions.map(p => `
+              <div style="border-bottom: 1px solid #e2e8f0; padding: 6px 0;">
+                <strong>${new Date(p.createdAt).toLocaleDateString()}:</strong> ${p.diagnosis}
+                <div style="font-size: 0.75rem; color: #64748b;">Meds: ${p.medicines.map(m => m.name).join(', ')}</div>
+              </div>
+            `).join('');
+          } else {
+            details.innerHTML = `<em>First visit today. No previous history.</em>`;
+          }
+        }
+      } catch (e) {
+        console.error('History fetch error:', e);
+      }
+    }
+
+    // GIANT NEXT PATIENT CALL WORKFLOW
+    async function callNextPatient() {
+      const btn = document.getElementById('btn-call-next');
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳ CALLING...</span>`;
+
+      try {
+        const res = await fetch('/api/doctor/next-patient', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify({ platform: 'Doctor Console' })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`🔔 NEXT PATIENT CALLED: ${data.visit.parchaCode} (${data.visit.patientName})`);
+          
+          document.getElementById('ack-status-indicator').innerHTML = `
+            <span>⏳ ALERT SENT TO ASSISTANT — Awaiting Acknowledgement...</span>
+          `;
+          document.getElementById('ack-status-indicator').style.borderColor = '#f59e0b';
+          document.getElementById('ack-status-indicator').style.color = '#fbbf24';
+
+          document.getElementById('current-called-info').innerHTML = `
+            Called <strong>${data.visit.parchaCode} (${data.visit.patientName})</strong>. Waiting for patient to reach consultation room.
+          `;
+
+          // Select this called patient in workspace
+          selectPatientForConsultation(data.visit);
+          await loadDoctorData();
+        } else {
+          alert(data.error || 'No waiting patients');
+        }
+      } catch (e) {
+        console.error('Call next error:', e);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>🔔 NEXT PATIENT</span>`;
+      }
+    }
+
+    // START CONSULTATION (Sets status to WITH DOCTOR)
+    async function startConsultation() {
+      if (!state.activeVisit) return;
+      try {
+        const res = await fetch('/api/doctor/start-consultation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify({ visitId: state.activeVisit.id, platform: 'Doctor Console' })
+        });
+        if (res.ok) {
+          showToast(`✓ Consultation started with ${state.activeVisit.patientName}`);
+          state.activeVisit.status = 'WITH DOCTOR';
+          loadDoctorData();
+        }
+      } catch (e) {
+        console.error('Start consultation error:', e);
+      }
+    }
+
+    // Live Medicine Search from Central Inventory
+    let searchTimer = null;
+    function searchMedicineLive() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(async () => {
+        const q = document.getElementById('med-search-input').value.trim();
+        const resultsBox = document.getElementById('med-search-results');
+
+        if (q.length < 2) {
+          resultsBox.style.display = 'none';
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/inventory/search?q=${encodeURIComponent(q)}`);
+          if (res.ok) {
+            const meds = await res.json();
+            resultsBox.innerHTML = '';
+            if (meds.length === 0) {
+              resultsBox.innerHTML = `<div style="padding: 10px; color: #94a3b8; font-size: 0.85rem;">No medicines found in stock</div>`;
+            } else {
+              meds.forEach(m => {
+                const row = document.createElement('div');
+                row.className = 'med-result-row';
+                row.innerHTML = `
+                  <div>
+                    <strong>${m.name}</strong> • ${m.form}
+                    <div style="font-size: 0.74rem; color: #64748b;">Generic: ${m.generic || 'N/A'} • Stock: ${m.stock}</div>
+                  </div>
+                  <div style="font-weight: 700; color: #0284c7;">₹${m.sellingPrice}</div>
+                `;
+                row.onclick = () => addMedicineToPrescription(m);
+                resultsBox.appendChild(row);
+              });
+            }
+            resultsBox.style.display = 'block';
+          }
+        } catch (e) {
+          console.error('Med search error:', e);
+        }
+      }, 250);
+    }
+
+    function addMedicineToPrescription(med) {
+      document.getElementById('med-search-results').style.display = 'none';
+      document.getElementById('med-search-input').value = '';
+
+      state.prescribedMedicines.push({
+        id: med.id,
+        name: med.name,
+        strength: med.strength || 'Standard',
+        form: med.form || 'Tablet',
+        dosage: '1 tablet',
+        frequency: 'Twice Daily',
+        duration: '5 Days',
+        instructions: 'After Food',
+        quantity: 10,
+        sellingPrice: med.sellingPrice
+      });
+      renderPrescribedMedsTable();
+      showToast(`Added ${med.name}`);
+    }
+
+    function removeMedicine(index) {
+      state.prescribedMedicines.splice(index, 1);
+      renderPrescribedMedsTable();
+    }
+
+    function renderPrescribedMedsTable() {
+      const tbody = document.getElementById('prescribed-meds-tbody');
+      tbody.innerHTML = '';
+
+      state.prescribedMedicines.forEach((med, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${med.name}</strong></td>
+          <td>${med.strength}</td>
+          <td>
+            <select onchange="updateMedField(${idx}, 'frequency', this.value)">
+              <option ${med.frequency==='Once Daily'?'selected':''}>Once Daily</option>
+              <option ${med.frequency==='Twice Daily'?'selected':''}>Twice Daily</option>
+              <option ${med.frequency==='Three Times Daily'?'selected':''}>Three Times Daily</option>
+              <option ${med.frequency==='Four Times Daily'?'selected':''}>Four Times Daily</option>
+              <option ${med.frequency==='As Required'?'selected':''}>As Required</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" style="width: 80px;" value="${med.duration}" onchange="updateMedField(${idx}, 'duration', this.value)">
+          </td>
+          <td>
+            <select onchange="updateMedField(${idx}, 'instructions', this.value)">
+              <option ${med.instructions==='After Food'?'selected':''}>After Food</option>
+              <option ${med.instructions==='Before Food'?'selected':''}>Before Food</option>
+              <option ${med.instructions==='With Food'?'selected':''}>With Food</option>
+              <option ${med.instructions==='At Bedtime'?'selected':''}>At Bedtime</option>
+              <option ${med.instructions==='As Directed'?'selected':''}>As Directed</option>
+            </select>
+          </td>
+          <td>
+            <input type="number" style="width: 60px;" value="${med.quantity}" min="1" onchange="updateMedField(${idx}, 'quantity', this.value)">
+          </td>
+          <td>
+            <button type="button" class="btn-remove-row" onclick="removeMedicine(${idx})">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateMedField(idx, field, val) {
+      if (state.prescribedMedicines[idx]) {
+        state.prescribedMedicines[idx][field] = val;
+      }
+    }
+
+    // Save & Send Prescription to Medical / Billing
+    async function saveAndSendPrescription() {
+      if (!state.activeVisit) {
+        alert('Please select a patient first');
+        return;
+      }
+
+      const diagnosis = document.getElementById('rx-diagnosis').value.trim();
+      if (!diagnosis) {
+        alert('Please enter a clinical diagnosis');
+        return;
+      }
+
+      const payload = {
+        visitId: state.activeVisit.id,
+        patientId: state.activeVisit.patientId,
+        chiefComplaint: document.getElementById('rx-complaint').value.trim(),
+        symptoms: document.getElementById('rx-symptoms').value.trim(),
+        diagnosis,
+        clinicalNotes: document.getElementById('rx-notes').value.trim(),
+        advice: document.getElementById('rx-advice').value.trim(),
+        followUpDays: document.getElementById('rx-followup').value,
+        medicines: state.prescribedMedicines,
+        platform: 'Doctor Master Console'
+      };
+
+      try {
+        const res = await fetch('/api/doctor/save-prescription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showToast(`✓ Prescription Saved & Sent to Medical Module for ${state.activeVisit.parchaCode}`);
+          openPrintPreview('FULL_LETTERHEAD');
+          await loadDoctorData();
+        } else {
+          alert(data.error || 'Failed to save prescription');
+        }
+      } catch (e) {
+        console.error('Prescription save error:', e);
+      }
+    }
+
+    // Print & Preview Modal Handling
+    function openPrintPreview(mode) {
+      state.previewMode = mode;
+      document.getElementById('pr-name').innerText = state.activeVisit?.patientName || 'Rajesh Kumar';
+      document.getElementById('pr-age-gen').innerText = `${state.activeVisit?.age || 42} / ${state.activeVisit?.gender || 'M'}`;
+      document.getElementById('pr-parcha').innerText = state.activeVisit?.parchaCode || 'PARCHA NO. 300';
+      document.getElementById('pr-date').innerText = new Date().toLocaleDateString('en-GB');
+      document.getElementById('pr-diagnosis').innerText = document.getElementById('rx-diagnosis').value || 'Clinical Diagnosis';
+      document.getElementById('pr-advice').innerText = document.getElementById('rx-advice').value || 'Rest and hydration';
+      document.getElementById('pr-followup').innerText = `After ${document.getElementById('rx-followup').value} Days`;
+
+      const tbody = document.getElementById('pr-meds-tbody');
+      tbody.innerHTML = '';
+      state.prescribedMedicines.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="padding: 6px 0;"><strong>${m.name}</strong></td>
+          <td>${m.dosage}</td>
+          <td>${m.frequency}</td>
+          <td>${m.duration}</td>
+          <td>${m.instructions}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      setPreviewMode(mode);
+      document.getElementById('print-modal').classList.add('active');
+    }
+
+    function setPreviewMode(mode) {
+      state.previewMode = mode;
+      const sheet = document.getElementById('print-area');
+      if (mode === 'PRE_PRINTED') {
+        sheet.classList.add('pre-printed-mode');
+        document.getElementById('print-modal-title').innerText = "Pre-Printed Paper Print (Letterhead Hidden for Physical Stationery)";
+      } else {
+        sheet.classList.remove('pre-printed-mode');
+        document.getElementById('print-modal-title').innerText = "Full Letterhead Digital Prescription Preview";
+      }
+    }
+
+    function triggerPhysicalPrint() {
+      window.print();
+    }
+
+    function sendWhatsAppPrescription() {
+      const p = state.activeVisit;
+      if (!p) return;
+      const phone = (p.whatsapp || '').replace(/[^0-9]/g, '');
+      const medsText = state.prescribedMedicines.map((m, i) => `${i+1}. ${m.name} - ${m.dosage} (${m.frequency}) for ${m.duration} [${m.instructions}]`).join('%0A');
+      const text = `*SIDRA MOTION CLINIC DEMO - Digital Prescription*%0A%0A*Patient:* ${p.patientName}%0A*Parcha:* ${p.parchaCode}%0A*Date:* ${new Date().toLocaleDateString()}%0A*Diagnosis:* ${document.getElementById('rx-diagnosis').value}%0A%0A*Prescribed Medicines:*%0A${medsText}%0A%0A*Advice:* ${document.getElementById('rx-advice').value}%0A%0A_Dr. A. K. Sharma (MD, MBBS)_`;
+      
+      const url = `https://wa.me/${phone}?text=${text}`;
+      window.open(url, '_blank');
+      showToast('Opening WhatsApp client with formatted prescription...');
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-modal').classList.remove('active');
+    }
+
+    // Daily Report Loading
+    async function loadDailyReport() {
+      try {
+        const res = await fetch('/api/reports/daily', {
+          headers: { 'Authorization': `Bearer ${state.token}` }
+        });
+        if (res.ok) {
+          const report = await res.json();
+          const div = document.getElementById('daily-report-content');
+          div.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px;">
+              <div class="metric-box">
+                <span class="metric-lbl">Total Patients</span>
+                <span class="metric-num">${report.totalPatients}</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-lbl">Consultation Fees</span>
+                <span class="metric-num" style="color: #0284c7;">₹${report.consultationFees}</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-lbl">Medicine Sales</span>
+                <span class="metric-num" style="color: #0d9488;">₹${report.medicineSales}</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-lbl">Total Clinic Revenue</span>
+                <span class="metric-num" style="color: #4338ca;">₹${report.totalRevenue}</span>
+              </div>
+            </div>
+            <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">Payment Modes Collection:</div>
+            <div style="display: flex; gap: 16px; font-size: 0.85rem; color: #475569;">
+              <div>Cash: ₹${report.paymentBreakdown.Cash}</div>
+              <div>UPI: ₹${report.paymentBreakdown.UPI}</div>
+              <div>Card: ₹${report.paymentBreakdown.Card}</div>
+            </div>
+          `;
+        }
+      } catch (e) {
+        console.error('Report error:', e);
+      }
+    }
+
+    function openTemplateDesigner() {
+      openPrintPreview('FULL_LETTERHEAD');
+      showToast('Prescription Template Designer Ready');
+    }
+
+    // WebSocket Real-time Sync
+    function initWebSocket() {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}`;
+      const ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data.event === 'ASSISTANT_ACKNOWLEDGED') {
+            // Real-time notification when Assistant acknowledges
+            document.getElementById('ack-status-indicator').innerHTML = `
+              <span>ASSISTANT NOTIFIED ✓ ACKNOWLEDGED ✓ (${new Date(data.payload.acknowledgedAt).toLocaleTimeString()})</span>
+            `;
+            document.getElementById('ack-status-indicator').style.borderColor = '#10b981';
+            document.getElementById('ack-status-indicator').style.color = '#34d399';
+            showToast(`✓ Assistant acknowledged: ${data.payload.parchaCode} is coming to consultation.`);
+            loadDoctorData();
+          } else if (data.event === 'NEW_PATIENT_ARRIVED' || data.event === 'QUEUE_STATUS_UPDATED') {
+            loadDoctorData();
+          }
+        } catch (e) {
+          console.error('WS Error:', e);
+        }
+      };
+
+      ws.onclose = () => {
+        setTimeout(initWebSocket, 3000);
+      };
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDoctorData();
+      initWebSocket();
+    });
+  </script>
+</body>
+</html>

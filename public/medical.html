@@ -683,7 +683,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
               <div>
-                <span class="rx-parcha-badge" id="disp-parcha">PARCHA NO. 300</span>
+                <span class="rx-parcha-badge" id="disp-parcha">TOKEN NO. 300</span>
                 <h2 style="font-size: 1.25rem; font-weight: 800; margin-top: 4px;" id="disp-patient-name">Rajesh Kumar Srivastava</h2>
                 <div style="font-size: 0.8rem; color: #64748b;" id="disp-patient-meta">42y / Male • Phone: +91 98765 12345</div>
               </div>
@@ -753,7 +753,7 @@
               </div>
 
               <!-- Big Button: Complete Payment & Deduct Stock -->
-              <button class="btn-complete-payment" onclick="processPaymentAndDeductStock()">
+              <button id="btn-collect-pay" class="btn-complete-payment" onclick="processPaymentAndDeductStock()">
                 <span>✓ COLLECT PAYMENT & DEDUCT STOCK</span>
               </button>
             </div>
@@ -809,7 +809,7 @@
                 <th>Batch</th>
                 <th>Action</th>
                 <th>Quantity</th>
-                <th>Parcha / Ref</th>
+                <th>Token / Ref</th>
                 <th>Authorized User</th>
               </tr>
             </thead>
@@ -867,7 +867,7 @@
 
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 12px;">
         <div><strong>Patient:</strong> <span id="rec-patient">Rajesh Kumar</span></div>
-        <div><strong>Parcha:</strong> <span id="rec-parcha" style="font-weight: 800; color: #0284c7;">PARCHA NO. 300</span></div>
+        <div><strong>Token:</strong> <span id="rec-parcha" style="font-weight: 800; color: #0284c7;">TOKEN NO. 300</span></div>
       </div>
       <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #64748b; margin-bottom: 14px;">
         <div><strong>Date:</strong> <span id="rec-date">27-09-2026</span></div>
@@ -1048,6 +1048,19 @@
       document.getElementById('calc-med-total').innerText = `₹${medTotal.toFixed(2)}`;
       document.getElementById('calc-doctor-fee').innerText = `₹500.00`;
       recalculateBill();
+
+      const payBtn = document.getElementById('btn-collect-pay');
+      if (payBtn) {
+        if (rx.status === 'PAID') {
+          payBtn.innerHTML = `<span>📄 VIEW / PRINT RECEIPT (ALREADY PAID)</span>`;
+          payBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+          payBtn.style.boxShadow = '0 6px 20px rgba(2, 132, 199, 0.35)';
+        } else {
+          payBtn.innerHTML = `<span>✓ COLLECT PAYMENT & DEDUCT STOCK</span>`;
+          payBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+          payBtn.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.35)';
+        }
+      }
     }
 
     function recalculateBill() {
@@ -1089,8 +1102,14 @@
       const discount = parseFloat(document.getElementById('calc-discount').value) || 0;
       const grandTotal = parseFloat(document.getElementById('calc-grand-total').innerText.replace('₹', ''));
 
-      // Find matching bill
-      const billId = 'bill_' + rx.tokenNumber;
+      // If already paid, directly open receipt modal
+      if (rx.status === 'PAID') {
+        const disc = rx.bill ? (rx.bill.discount || 0) : discount;
+        const total = rx.bill ? (rx.bill.grandTotal || grandTotal) : grandTotal;
+        const mode = rx.bill ? (rx.bill.paymentMethod || 'Cash') : state.selectedPaymentMethod;
+        showReceiptModal(rx, total, disc, mode);
+        return;
+      }
 
       try {
         const res = await fetch('/api/medical/complete-payment', {
@@ -1100,7 +1119,9 @@
             'Authorization': `Bearer ${state.token}`
           },
           body: JSON.stringify({
-            billId: 'bill_' + rx.tokenNumber + '_mujz2z9u', // fallback or real billId
+            billId: rx.billId || (rx.bill && rx.bill.id) || ('bill_' + rx.tokenNumber),
+            prescriptionId: rx.id,
+            tokenNumber: rx.tokenNumber,
             discount,
             paymentMethod: state.selectedPaymentMethod,
             paidAmount: grandTotal,
@@ -1113,7 +1134,6 @@
           showReceiptModal(rx, grandTotal, discount, state.selectedPaymentMethod);
           await loadMedicalData();
         } else {
-          // If bill ID was different, try with token number search
           alert(data.error || 'Payment failed');
         }
       } catch (e) {

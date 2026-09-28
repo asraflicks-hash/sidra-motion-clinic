@@ -8,7 +8,7 @@
     "doctorName": "Dr. A. K. Sharma (MD, MBBS)",
     "consultationFee": 500
   },
-  "tokenSequence": 305,
+  "tokenSequence": 303,
   "users": [
     {
       "id": "u_assistant_1",
@@ -48,7 +48,7 @@
       "address": "Aliganj Sector B, Lucknow",
       "bloodGroup": "B+",
       "weight": 74,
-      "createdAt": "2026-09-27T15:15:48.208Z"
+      "createdAt": "2026-09-28T04:22:50.238Z"
     },
     {
       "id": "SMC-P302",
@@ -59,7 +59,7 @@
       "address": "Indira Nagar, Block C, Lucknow",
       "bloodGroup": "O+",
       "weight": 56,
-      "createdAt": "2026-09-27T15:15:48.208Z"
+      "createdAt": "2026-09-28T04:22:50.238Z"
     },
     {
       "id": "SMC-P303",
@@ -70,7 +70,7 @@
       "address": "Chowk Heritage Zone, Lucknow",
       "bloodGroup": "A+",
       "weight": 68,
-      "createdAt": "2026-09-27T15:15:48.208Z"
+      "createdAt": "2026-09-28T04:22:50.238Z"
     },
     {
       "id": "SMC-P304",
@@ -81,76 +81,14 @@
       "address": "Gomti Nagar Extension, Lucknow",
       "bloodGroup": "AB+",
       "weight": 62,
-      "createdAt": "2026-09-27T15:15:48.208Z"
-    },
-    {
-      "id": "SMC-P305",
-      "fullName": "Vikas Malhotra",
-      "age": 38,
-      "gender": "Male",
-      "whatsapp": "+91 99351 12233",
-      "address": "Hazratganj, Lucknow",
-      "bloodGroup": "B+",
-      "weight": 72,
-      "createdAt": "2026-09-27T15:16:03.010Z"
-    },
-    {
-      "id": "SMC-P306",
-      "fullName": "Sunil Kumar Sharma",
-      "age": 45,
-      "gender": "Male",
-      "whatsapp": "+91 94150 11223",
-      "address": "Gomti Nagar, Lucknow",
-      "bloodGroup": "O+",
-      "weight": 76,
-      "createdAt": "2026-09-27T15:29:14.154Z"
+      "createdAt": "2026-09-28T04:22:50.238Z"
     }
   ],
   "visits": [
     {
-      "id": "v_304_mujz4xii",
-      "tokenNumber": 304,
-      "parchaCode": "PARCHA NO. 304",
-      "patientId": "SMC-P306",
-      "patientName": "Sunil Kumar Sharma",
-      "age": 45,
-      "gender": "Male",
-      "whatsapp": "+91 94150 11223",
-      "address": "Gomti Nagar, Lucknow",
-      "bloodGroup": "O+",
-      "weight": 76,
-      "chiefComplaint": "Chest congestion and severe cough",
-      "status": "WAITING",
-      "createdAt": "2026-09-27T15:29:14.154Z",
-      "calledAt": null,
-      "acknowledgedAt": null,
-      "consultationStartedAt": null,
-      "completedAt": null
-    },
-    {
-      "id": "v_303_mujynz2a",
-      "tokenNumber": 303,
-      "parchaCode": "PARCHA NO. 303",
-      "patientId": "SMC-P305",
-      "patientName": "Vikas Malhotra",
-      "age": 38,
-      "gender": "Male",
-      "whatsapp": "+91 99351 12233",
-      "address": "Hazratganj, Lucknow",
-      "bloodGroup": "B+",
-      "weight": 72,
-      "chiefComplaint": "Persistent cough and sore throat",
-      "status": "WAITING",
-      "createdAt": "2026-09-27T15:16:03.010Z",
-      "calledAt": null,
-      "acknowledgedAt": null,
-      "consultationStartedAt": null,
-      "completedAt": null
-    },
-    {
       "id": "v_300",
       "tokenNumber": 300,
-      "parchaCode": "PARCHA NO. 300",
+      "parchaCode": "TOKEN NO. 300",
       "patientId": "SMC-P301",
       "patientName": "Rajesh Kumar Srivastava",
       "age": 42,
@@ -160,18 +98,17 @@
       "bloodGroup": "B+",
       "weight": 74,
       "chiefComplaint": "Severe fever and body ache since 2 days",
-      "status": "PAYMENT PENDING",
-      "createdAt": "2026-09-27T14:15:48.208Z",
-      "calledAt": "2026-09-27T15:16:10.703Z",
-      "acknowledgedAt": "2026-09-27T15:16:18.197Z",
+      "status": "CALLED",
+      "createdAt": "2026-09-28T03:22:50.238Z",
+      "calledAt": "2026-09-28T04:24:48.587Z",
+      "acknowledgedAt": null,
       "consultationStartedAt": null,
-      "completedAt": null,
-      "diagnosis": "Acute Viral Fever"
+      "completedAt": null
     },
     {
       "id": "v_301",
       "tokenNumber": 301,
-      "parchaCode": "PARCHA NO. 301",
+      "parchaCode": "TOKEN NO. 301",
       "patientId": "SMC-P302",
       "patientName": "Ananya Gupta",
       "age": 28,
@@ -181,18 +118,17 @@
       "bloodGroup": "O+",
       "weight": 56,
       "chiefComplaint": "Migraine headache and nausea",
-      "status": "COMPLETED",
-      "createdAt": "2026-09-27T14:35:48.208Z",
-      "calledAt": "2026-09-27T15:29:14.175Z",
-      "acknowledgedAt": "2026-09-27T15:29:14.180Z",
+      "status": "CALLED",
+      "createdAt": "2026-09-28T03:42:50.238Z",
+      "calledAt": "2026-09-28T04:25:11.558Z",
+      "acknowledgedAt": "2026-09-28T04:25:17.837Z",
       "consultationStartedAt": null,
-      "completedAt": "2026-09-27T15:29:14.202Z",
-      "diagnosis": "Acute Bronchitis"
+      "completedAt": null
     },
     {
       "id": "v_302",
       "tokenNumber": 302,
-      "parchaCode": "PARCHA NO. 302",
+      "parchaCode": "TOKEN NO. 302",
       "patientId": "SMC-P303",
       "patientName": "Mohammad Farhan",
       "age": 35,
@@ -202,12 +138,13 @@
       "bloodGroup": "A+",
       "weight": 68,
       "chiefComplaint": "Knee pain during climbing stairs",
-      "status": "WAITING",
-      "createdAt": "2026-09-27T14:55:48.208Z",
-      "calledAt": null,
-      "acknowledgedAt": null,
+      "status": "COMPLETED",
+      "createdAt": "2026-09-28T04:02:50.238Z",
+      "calledAt": "2026-09-28T04:25:30.103Z",
+      "acknowledgedAt": "2026-09-28T04:25:37.820Z",
       "consultationStartedAt": null,
-      "completedAt": null
+      "completedAt": "2026-09-28T04:28:20.461Z",
+      "diagnosis": "Acute Viral Fever weysdtfhbgith Myalgia"
     }
   ],
   "inventory": [
@@ -222,7 +159,7 @@
       "expiry": "2027-11-30",
       "purchasePrice": 18,
       "sellingPrice": 32.5,
-      "stock": 350,
+      "stock": 344,
       "minStock": 50,
       "supplier": "Micro Labs Ltd"
     },
@@ -252,7 +189,7 @@
       "expiry": "2026-12-31",
       "purchasePrice": 110,
       "sellingPrice": 168,
-      "stock": 85,
+      "stock": 95,
       "minStock": 25,
       "supplier": "GlaxoSmithKline"
     },
@@ -304,125 +241,96 @@
   ],
   "prescriptions": [
     {
-      "id": "rx_301_mujz4xjn",
-      "visitId": "v_301",
-      "tokenNumber": 301,
-      "parchaCode": "PARCHA NO. 301",
-      "patientId": "SMC-P302",
-      "patientName": "Ananya Gupta",
-      "age": 28,
-      "gender": "Female",
-      "whatsapp": "+91 98390 54321",
-      "address": "Indira Nagar, Block C, Lucknow",
-      "bloodGroup": "O+",
-      "weight": 56,
-      "doctorName": "Dr. A. K. Sharma (MD, MBBS)",
-      "chiefComplaint": "Migraine headache and nausea",
-      "symptoms": "",
-      "diagnosis": "Acute Bronchitis",
-      "clinicalNotes": "",
-      "advice": "Warm fluids, complete bed rest for 3 days",
-      "followUpDays": "5",
-      "followUpDate": null,
-      "medicines": [
-        {
-          "sellingPrice": 168,
-          "id": "med_3",
-          "frequency": "Twice Daily",
-          "strength": "625 mg",
-          "dosage": "1 tablet",
-          "instructions": "After Food",
-          "name": "Amoxicillin & Potassium Clavulanate (Augmentin 625 Duo)",
-          "quantity": 10,
-          "duration": "5 Days"
-        }
-      ],
-      "templateId": "default_a4",
-      "status": "PAID",
-      "createdAt": "2026-09-27T15:29:14.195Z"
-    },
-    {
-      "id": "rx_300_mujz2z9u",
-      "visitId": "v_300",
-      "tokenNumber": 300,
-      "parchaCode": "PARCHA NO. 300",
-      "patientId": "SMC-P301",
-      "patientName": "Rajesh Kumar Srivastava",
-      "age": 42,
+      "id": "rx_302_mukqy063",
+      "visitId": "v_302",
+      "tokenNumber": 302,
+      "parchaCode": "TOKEN NO. 302",
+      "patientId": "SMC-P303",
+      "patientName": "Mohammad Farhan",
+      "age": 35,
       "gender": "Male",
-      "whatsapp": "+91 98765 12345",
-      "address": "Aliganj Sector B, Lucknow",
-      "bloodGroup": "B+",
-      "weight": 74,
+      "whatsapp": "+91 94150 99887",
+      "address": "Chowk Heritage Zone, Lucknow",
+      "bloodGroup": "A+",
+      "weight": 68,
       "doctorName": "Dr. A. K. Sharma (MD, MBBS)",
-      "chiefComplaint": "Severe fever and body ache since 2 days",
-      "symptoms": "",
-      "diagnosis": "Acute Viral Fever",
-      "clinicalNotes": "",
-      "advice": "Drink lukewarm water, rest for 3 days",
+      "chiefComplaint": "Knee pain during climbing stehsrthairs",
+      "symptoms": "werf",
+      "diagnosis": "Acute Viral Fever weysdtfhbgith Myalgia",
+      "clinicalNotes": "zfgetrfh",
+      "advice": "Drink boiled lukewarm water, rest for 3 days, avoid cold drinks.",
       "followUpDays": "7",
       "followUpDate": null,
       "medicines": [
         {
-          "sellingPrice": 32.5,
           "id": "med_1",
-          "frequency": "Twice Daily",
-          "strength": "650 mg",
-          "dosage": "1 tablet",
-          "instructions": "After Food",
           "name": "Paracetamol 650 mg (Dolo)",
+          "strength": "650 mg",
+          "form": "Tablet",
+          "dosage": "1 tablet",
+          "frequency": "Twice Daily",
+          "duration": "3 Days",
+          "instructions": "After Food",
           "quantity": 6,
-          "duration": "3 Days"
+          "sellingPrice": 32.5
+        }
+      ],
+      "templateId": "default_a4",
+      "status": "PAID",
+      "createdAt": "2026-09-28T04:27:40.251Z",
+      "billId": "bill_302_mukqy063"
+    },
+    {
+      "id": "rx_302_mukqwd07",
+      "visitId": "v_302",
+      "tokenNumber": 302,
+      "parchaCode": "TOKEN NO. 302",
+      "patientId": "SMC-P303",
+      "patientName": "Mohammad Farhan",
+      "age": 35,
+      "gender": "Male",
+      "whatsapp": "+91 94150 99887",
+      "address": "Chowk Heritage Zone, Lucknow",
+      "bloodGroup": "A+",
+      "weight": 68,
+      "doctorName": "Dr. A. K. Sharma (MD, MBBS)",
+      "chiefComplaint": "Knee pain during climbing stairs",
+      "symptoms": "",
+      "diagnosis": "Acute Viral Fever with Myalgia",
+      "clinicalNotes": "",
+      "advice": "Drink boiled lukewarm water, rest for 3 days, avoid cold drinks.",
+      "followUpDays": "7",
+      "followUpDate": null,
+      "medicines": [
+        {
+          "id": "med_1",
+          "name": "Paracetamol 650 mg (Dolo)",
+          "strength": "650 mg",
+          "form": "Tablet",
+          "dosage": "1 tablet",
+          "frequency": "Twice Daily",
+          "duration": "3 Days",
+          "instructions": "After Food",
+          "quantity": 6,
+          "sellingPrice": 32.5
         }
       ],
       "templateId": "default_a4",
       "status": "PAYMENT PENDING",
-      "createdAt": "2026-09-27T15:27:43.122Z"
+      "createdAt": "2026-09-28T04:26:23.575Z",
+      "billId": "bill_302_mukqwd07"
     }
   ],
   "bills": [
     {
-      "id": "bill_301_mujz4xjn",
-      "prescriptionId": "rx_301_mujz4xjn",
-      "visitId": "v_301",
-      "tokenNumber": 301,
-      "parchaCode": "PARCHA NO. 301",
-      "patientId": "SMC-P302",
-      "patientName": "Ananya Gupta",
-      "whatsapp": "+91 98390 54321",
-      "doctorFee": 500,
-      "medicineTotal": 1680,
-      "discount": 0,
-      "grandTotal": 2180,
-      "paidAmount": 2180,
-      "balance": 0,
-      "paymentMethod": "UPI",
-      "status": "PAID",
-      "medicines": [
-        {
-          "sellingPrice": 168,
-          "id": "med_3",
-          "frequency": "Twice Daily",
-          "strength": "625 mg",
-          "dosage": "1 tablet",
-          "instructions": "After Food",
-          "name": "Amoxicillin & Potassium Clavulanate (Augmentin 625 Duo)",
-          "quantity": 10,
-          "duration": "5 Days"
-        }
-      ],
-      "createdAt": "2026-09-27T15:29:14.195Z",
-      "paidAt": "2026-09-27T15:29:14.202Z"
-    },
-    {
-      "id": "bill_300_mujz2z9u",
-      "prescriptionId": "rx_300_mujz2z9u",
-      "visitId": "v_300",
-      "tokenNumber": 300,
-      "parchaCode": "PARCHA NO. 300",
-      "patientId": "SMC-P301",
-      "patientName": "Rajesh Kumar Srivastava",
-      "whatsapp": "+91 98765 12345",
+      "id": "bill_302_mukqy063",
+      "prescriptionId": "rx_302_mukqy063",
+      "visitId": "v_302",
+      "tokenNumber": 302,
+      "parchaCode": "TOKEN NO. 302",
+      "patientId": "SMC-P303",
+      "patientName": "Mohammad Farhan",
+      "whatsapp": "+91 94150 99887",
       "doctorFee": 500,
       "medicineTotal": 195,
       "discount": 0,
@@ -433,105 +341,140 @@
       "status": "PAYMENT PENDING",
       "medicines": [
         {
-          "sellingPrice": 32.5,
           "id": "med_1",
-          "frequency": "Twice Daily",
-          "strength": "650 mg",
-          "dosage": "1 tablet",
-          "instructions": "After Food",
           "name": "Paracetamol 650 mg (Dolo)",
+          "strength": "650 mg",
+          "form": "Tablet",
+          "dosage": "1 tablet",
+          "frequency": "Twice Daily",
+          "duration": "3 Days",
+          "instructions": "After Food",
           "quantity": 6,
-          "duration": "3 Days"
+          "sellingPrice": 32.5
         }
       ],
-      "createdAt": "2026-09-27T15:27:43.122Z"
+      "createdAt": "2026-09-28T04:27:40.251Z"
+    },
+    {
+      "id": "bill_302_mukqwd07",
+      "prescriptionId": "rx_302_mukqwd07",
+      "visitId": "v_302",
+      "tokenNumber": 302,
+      "parchaCode": "TOKEN NO. 302",
+      "patientId": "SMC-P303",
+      "patientName": "Mohammad Farhan",
+      "whatsapp": "+91 94150 99887",
+      "doctorFee": 500,
+      "medicineTotal": 195,
+      "discount": 0,
+      "grandTotal": 695,
+      "paidAmount": 695,
+      "balance": 0,
+      "paymentMethod": "UPI",
+      "status": "PAID",
+      "medicines": [
+        {
+          "id": "med_1",
+          "name": "Paracetamol 650 mg (Dolo)",
+          "strength": "650 mg",
+          "form": "Tablet",
+          "dosage": "1 tablet",
+          "frequency": "Twice Daily",
+          "duration": "3 Days",
+          "instructions": "After Food",
+          "quantity": 6,
+          "sellingPrice": 32.5
+        }
+      ],
+      "createdAt": "2026-09-28T04:26:23.575Z",
+      "paidAt": "2026-09-28T04:28:20.460Z"
     }
   ],
   "auditLogs": [
     {
-      "id": "log_1790522954203_q0fj",
-      "timestamp": "2026-09-27T15:29:14.203Z",
+      "id": "log_1790569700462_qrij",
+      "timestamp": "2026-09-28T04:28:20.462Z",
       "user": "Ramesh Pharmacy",
       "role": "MEDICAL",
-      "action": "Completed payment of ₹2180 via UPI for PARCHA NO. 301 (Ananya Gupta)",
-      "recordId": "bill_301_mujz4xjn",
-      "platform": "Medical Portal"
+      "action": "Completed payment of ₹695 via UPI for TOKEN NO. 302 (Mohammad Farhan)",
+      "recordId": "bill_302_mukqwd07",
+      "platform": "Medical Console"
     },
     {
-      "id": "log_1790522954196_kelr",
-      "timestamp": "2026-09-27T15:29:14.196Z",
+      "id": "log_1790569660252_p7vq",
+      "timestamp": "2026-09-28T04:27:40.252Z",
       "user": "Dr. A. K. Sharma",
       "role": "DOCTOR",
-      "action": "Created & Sent Prescription for PARCHA NO. 301 (Ananya Gupta) to Medical/Billing",
-      "recordId": "rx_301_mujz4xjn",
+      "action": "Created & Sent Prescription for TOKEN NO. 302 (Mohammad Farhan) to Medical/Billing",
+      "recordId": "rx_302_mukqy063",
+      "platform": "Doctor Master Console"
+    },
+    {
+      "id": "log_1790569583577_1vey",
+      "timestamp": "2026-09-28T04:26:23.577Z",
+      "user": "Dr. A. K. Sharma",
+      "role": "DOCTOR",
+      "action": "Created & Sent Prescription for TOKEN NO. 302 (Mohammad Farhan) to Medical/Billing",
+      "recordId": "rx_302_mukqwd07",
+      "platform": "Doctor Master Console"
+    },
+    {
+      "id": "log_1790569537821_7y54",
+      "timestamp": "2026-09-28T04:25:37.821Z",
+      "user": "Pooja Verma",
+      "role": "ASSISTANT",
+      "action": "Acknowledged Next Patient: TOKEN NO. 302 (Mohammad Farhan)",
+      "recordId": "v_302",
+      "platform": "Windows Assistant"
+    },
+    {
+      "id": "log_1790569530104_gfw1",
+      "timestamp": "2026-09-28T04:25:30.104Z",
+      "user": "Dr. A. K. Sharma",
+      "role": "DOCTOR",
+      "action": "Called NEXT PATIENT: TOKEN NO. 302 (Mohammad Farhan)",
+      "recordId": "v_302",
       "platform": "Doctor Console"
     },
     {
-      "id": "log_1790522954180_dv5b",
-      "timestamp": "2026-09-27T15:29:14.180Z",
+      "id": "log_1790569517839_7cme",
+      "timestamp": "2026-09-28T04:25:17.839Z",
       "user": "Pooja Verma",
       "role": "ASSISTANT",
-      "action": "Acknowledged Next Patient: PARCHA NO. 301 (Ananya Gupta)",
+      "action": "Acknowledged Next Patient: TOKEN NO. 301 (Ananya Gupta)",
       "recordId": "v_301",
-      "platform": "Assistant Module"
+      "platform": "Windows Assistant"
     },
     {
-      "id": "log_1790522954176_reis",
-      "timestamp": "2026-09-27T15:29:14.176Z",
+      "id": "log_1790569511559_vg9e",
+      "timestamp": "2026-09-28T04:25:11.559Z",
       "user": "Dr. A. K. Sharma",
       "role": "DOCTOR",
-      "action": "Called NEXT PATIENT: PARCHA NO. 301 (Ananya Gupta)",
+      "action": "Called NEXT PATIENT: TOKEN NO. 301 (Ananya Gupta)",
       "recordId": "v_301",
-      "platform": "Doctor Module"
+      "platform": "Doctor Console"
     },
     {
-      "id": "log_1790522954155_n9y7",
-      "timestamp": "2026-09-27T15:29:14.155Z",
-      "user": "Pooja Verma",
-      "role": "ASSISTANT",
-      "action": "Registered & Sent to Doctor: PARCHA NO. 304 (Sunil Kumar Sharma)",
-      "recordId": "v_304_mujz4xii",
-      "platform": "Assistant App"
-    },
-    {
-      "id": "log_1790522863123_3eh7",
-      "timestamp": "2026-09-27T15:27:43.123Z",
+      "id": "log_1790569488588_gny0",
+      "timestamp": "2026-09-28T04:24:48.588Z",
       "user": "Dr. A. K. Sharma",
       "role": "DOCTOR",
-      "action": "Created & Sent Prescription for PARCHA NO. 300 (Rajesh Kumar Srivastava) to Medical/Billing",
-      "recordId": "rx_300_mujz2z9u",
-      "platform": "Doctor Console Test"
+      "action": "Called NEXT PATIENT: TOKEN NO. 300 (Rajesh Kumar Srivastava)",
+      "recordId": "v_300",
+      "platform": "Doctor Console"
     },
     {
-      "id": "log_1790522178197_v0xv",
-      "timestamp": "2026-09-27T15:16:18.197Z",
+      "id": "log_1790569448627_vuuw",
+      "timestamp": "2026-09-28T04:24:08.627Z",
       "user": "Pooja Verma",
       "role": "ASSISTANT",
-      "action": "Acknowledged Next Patient: PARCHA NO. 300 (Rajesh Kumar Srivastava)",
-      "recordId": "v_300",
-      "platform": "Assistant Module"
-    },
-    {
-      "id": "log_1790522170704_kodk",
-      "timestamp": "2026-09-27T15:16:10.704Z",
-      "user": "Dr. A. K. Sharma",
-      "role": "DOCTOR",
-      "action": "Called NEXT PATIENT: PARCHA NO. 300 (Rajesh Kumar Srivastava)",
-      "recordId": "v_300",
-      "platform": "Doctor Module"
-    },
-    {
-      "id": "log_1790522163011_7o94",
-      "timestamp": "2026-09-27T15:16:03.011Z",
-      "user": "Pooja Verma",
-      "role": "ASSISTANT",
-      "action": "Registered & Sent to Doctor: PARCHA NO. 303 (Vikas Malhotra)",
-      "recordId": "v_303_mujynz2a",
-      "platform": "Test Client"
+      "action": "Logged in via App",
+      "recordId": "u_assistant_1",
+      "platform": "Web"
     },
     {
       "id": "log_1",
-      "timestamp": "2026-09-27T15:15:48.208Z",
+      "timestamp": "2026-09-28T04:22:50.238Z",
       "user": "System Initializer",
       "role": "SYSTEM",
       "action": "Clinic Initialized with Parcha token sequence starting at 300",
@@ -542,14 +485,14 @@
   "notifications": [],
   "inventoryTransactions": [
     {
-      "id": "tx_1790522954202_1d1u",
-      "timestamp": "2026-09-27T15:29:14.202Z",
-      "medicineId": "med_3",
-      "medicineName": "Amoxicillin & Potassium Clavulanate (Augmentin 625 Duo)",
-      "batch": "AG-9023",
-      "quantity": -10,
+      "id": "tx_1790569700461_2w1y",
+      "timestamp": "2026-09-28T04:28:20.461Z",
+      "medicineId": "med_1",
+      "medicineName": "Paracetamol 650 mg (Dolo)",
+      "batch": "DL-8821",
+      "quantity": -6,
       "action": "SALE",
-      "parchaCode": "PARCHA NO. 301",
+      "parchaCode": "TOKEN NO. 302",
       "user": "Ramesh Pharmacy"
     }
   ]

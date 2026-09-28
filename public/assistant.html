@@ -976,15 +976,15 @@
     <!-- Main Content Area -->
     <main class="content-area">
 
-      <!-- Hero Parcha Token Banner -->
+      <!-- Hero Token Banner -->
       <div class="token-hero-banner">
         <div class="hero-info">
           <h2>CURRENT TOKEN COUNTER</h2>
-          <div class="hero-desc">All new registrations start from <strong>Parcha 300</strong> and automatically sequence upward.</div>
+          <div class="hero-desc">All new registrations start from <strong>Token 300</strong> and automatically sequence upward.</div>
         </div>
         <div style="text-align: right;">
           <span style="font-size: 0.78rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.05em;">Upcoming Token</span>
-          <div class="hero-token" id="hero-next-parcha">PARCHA NO. 303</div>
+          <div class="hero-token" id="hero-next-parcha">TOKEN NO. 305</div>
         </div>
       </div>
 
@@ -1030,7 +1030,7 @@
             <table class="queue-table">
               <thead>
                 <tr>
-                  <th>Token / Parcha</th>
+                  <th>Token Number</th>
                   <th>Patient Details</th>
                   <th>Contact</th>
                   <th>Arrival Time</th>
@@ -1152,7 +1152,7 @@
         <div class="search-card">
           <div class="search-input-wrap">
             <span class="search-icon">🔍</span>
-            <input type="text" id="patient-search-input" placeholder="Search by Patient Name, Phone, Patient ID or Parcha Number..." oninput="executePatientSearch()">
+            <input type="text" id="patient-search-input" placeholder="Search by Patient Name, Phone, Patient ID or Token Number..." oninput="executePatientSearch()">
           </div>
         </div>
 
@@ -1209,7 +1209,7 @@
     <div class="alert-dialog">
       <div class="alert-bell-icon">🔔</div>
       <h3>NEXT PATIENT</h3>
-      <span class="alert-parcha-code" id="modal-parcha-code">PARCHA NO. 300</span>
+      <span class="alert-parcha-code" id="modal-parcha-code">TOKEN NO. 300</span>
       <div class="alert-patient-name" id="modal-patient-name">Patient Name</div>
       <div class="alert-instruction">
         <strong>Dr. A. K. Sharma</strong> is ready in consultation room.<br>
@@ -1352,7 +1352,7 @@
           document.getElementById('stat-called').innerText = stats.calledPatients;
           document.getElementById('stat-completed').innerText = stats.completedPatients;
           document.getElementById('nav-badge-queue').innerText = stats.waitingPatients;
-          document.getElementById('hero-next-parcha').innerText = `PARCHA NO. ${stats.nextParchaNumber}`;
+          document.getElementById('hero-next-parcha').innerText = `TOKEN NO. ${stats.nextParchaNumber}`;
           state.nextParchaNumber = stats.nextParchaNumber;
         }
       } catch (err) {
@@ -1617,7 +1617,7 @@
     // Next Patient Alert Modal & Acknowledgement
     function showNextPatientAlert(payload) {
       state.currentAlertVisit = payload;
-      document.getElementById('modal-parcha-code').innerText = payload.parchaNumber || `PARCHA NO. ${payload.tokenNumber}`;
+      document.getElementById('modal-parcha-code').innerText = payload.parchaNumber || `TOKEN NO. ${payload.tokenNumber}`;
       document.getElementById('modal-patient-name').innerText = payload.patientName;
       document.getElementById('next-patient-modal').classList.add('active');
 
@@ -1658,7 +1658,7 @@
     function testNextPatientAlert() {
       showNextPatientAlert({
         visitId: 'v_300',
-        parchaNumber: 'PARCHA NO. 300',
+        parchaNumber: 'TOKEN NO. 300',
         tokenNumber: 300,
         patientName: 'Rajesh Kumar Srivastava'
       });

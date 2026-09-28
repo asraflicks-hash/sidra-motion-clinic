@@ -113,7 +113,7 @@ const initialDB = {
     {
       id: "v_300",
       tokenNumber: 300,
-      parchaCode: "PARCHA NO. 300",
+      parchaCode: "TOKEN NO. 300",
       patientId: "SMC-P301",
       patientName: "Rajesh Kumar Srivastava",
       age: 42,
@@ -133,7 +133,7 @@ const initialDB = {
     {
       id: "v_301",
       tokenNumber: 301,
-      parchaCode: "PARCHA NO. 301",
+      parchaCode: "TOKEN NO. 301",
       patientId: "SMC-P302",
       patientName: "Ananya Gupta",
       age: 28,
@@ -153,7 +153,7 @@ const initialDB = {
     {
       id: "v_302",
       tokenNumber: 302,
-      parchaCode: "PARCHA NO. 302",
+      parchaCode: "TOKEN NO. 302",
       patientId: "SMC-P303",
       patientName: "Mohammad Farhan",
       age: 35,
@@ -271,7 +271,7 @@ const initialDB = {
       timestamp: new Date().toISOString(),
       user: "System Initializer",
       role: "SYSTEM",
-      action: "Clinic Initialized with Parcha token sequence starting at 300",
+      action: "Clinic Initialized with Token sequence starting at 300",
       recordId: "v_300",
       platform: "Central Backend"
     }
@@ -530,7 +530,7 @@ app.post('/api/assistant/register-and-send', authenticate, requireRole(['ASSISTA
   const newVisit = {
     id: 'v_' + tokenNumber + '_' + Date.now().toString(36),
     tokenNumber: tokenNumber,
-    parchaCode: `PARCHA NO. ${tokenNumber}`,
+    parchaCode: `TOKEN NO. ${tokenNumber}`,
     patientId: patient.id,
     patientName: patient.fullName,
     age: patient.age,
@@ -884,6 +884,7 @@ app.post('/api/doctor/save-prescription', authenticate, requireRole(['DOCTOR']),
   // Automatically prepare Pending Bill for Medical/Billing Queue
   if (!db.bills) db.bills = [];
   const billId = 'bill_' + visit.tokenNumber + '_' + Date.now().toString(36);
+  prescription.billId = billId;
   const pendingBill = {
     id: billId,
     prescriptionId: prescId,
@@ -1068,7 +1069,15 @@ app.get('/api/medical/dashboard-stats', authenticate, requireRole(['MEDICAL', 'D
 
 // Incoming Prescriptions Queue for Pharmacy
 app.get('/api/prescriptions/incoming', authenticate, requireRole(['MEDICAL', 'DOCTOR']), (req, res) => {
-  res.json(db.prescriptions || []);
+  const prescriptions = (db.prescriptions || []).map(p => {
+    const bill = (db.bills || []).find(b => b.prescriptionId === p.id || b.tokenNumber === p.tokenNumber);
+    return {
+      ...p,
+      billId: p.billId || (bill ? bill.id : null),
+      bill: bill || null
+    };
+  });
+  res.json(prescriptions);
 });
 
 // Mark Medicine Item Availability in Prescription (Available, Partially Available, Unavailable)
@@ -1106,6 +1115,8 @@ app.patch('/api/prescriptions/:id/item-availability', authenticate, requireRole(
 app.post('/api/medical/complete-payment', authenticate, requireRole(['MEDICAL', 'DOCTOR']), (req, res) => {
   const {
     billId,
+    prescriptionId,
+    tokenNumber,
     discount,
     discountAuthorizedBy,
     paymentMethod,
@@ -1113,9 +1124,67 @@ app.post('/api/medical/complete-payment', authenticate, requireRole(['MEDICAL', 
     platform
   } = req.body;
 
-  const bill = (db.bills || []).find(b => b.id === billId);
+  // Search by bill ID
+  let bill = (db.bills || []).find(b => b.id === billId);
+  // Search by prescription ID
+  if (!bill && prescriptionId) {
+    bill = (db.bills || []).find(b => b.prescriptionId === prescriptionId);
+  }
+  // Search by token number
+  if (!bill && tokenNumber) {
+    bill = (db.bills || []).find(b => b.tokenNumber === Number(tokenNumber));
+  }
+  // Fallback: extract token number from billId if formatted as bill_XXX_...
+  if (!bill && billId) {
+    const m = String(billId).match(/bill_(\d+)/);
+    if (m) {
+      bill = (db.bills || []).find(b => b.tokenNumber === Number(m[1]));
+    }
+  }
+
+  // Fallback: Auto-construct bill from prescription if it was missing
+  if (!bill && (prescriptionId || tokenNumber || billId)) {
+    const presc = (db.prescriptions || []).find(p =>
+      (prescriptionId && p.id === prescriptionId) ||
+      (tokenNumber && p.tokenNumber === Number(tokenNumber)) ||
+      (billId && (p.billId === billId || String(p.tokenNumber) === String(billId).replace(/\D/g, '')))
+    );
+    if (presc) {
+      const generatedBillId = presc.billId || ('bill_' + presc.tokenNumber + '_' + Date.now().toString(36));
+      presc.billId = generatedBillId;
+      const medTotal = (presc.medicines || []).reduce((sum, m) => sum + (Number(m.quantity) || 1) * (Number(m.sellingPrice) || 30), 0);
+      bill = {
+        id: generatedBillId,
+        prescriptionId: presc.id,
+        visitId: presc.visitId || null,
+        tokenNumber: presc.tokenNumber,
+        parchaCode: presc.parchaCode,
+        patientId: presc.patientId,
+        patientName: presc.patientName,
+        whatsapp: presc.whatsapp,
+        doctorFee: db.clinic.consultationFee || 500,
+        medicineTotal: medTotal,
+        discount: 0,
+        grandTotal: (db.clinic.consultationFee || 500) + medTotal,
+        paidAmount: 0,
+        balance: (db.clinic.consultationFee || 500) + medTotal,
+        paymentMethod: null,
+        status: 'PAYMENT PENDING',
+        medicines: presc.medicines,
+        createdAt: presc.createdAt || new Date().toISOString()
+      };
+      if (!db.bills) db.bills = [];
+      db.bills.unshift(bill);
+    }
+  }
+
   if (!bill) {
     return res.status(404).json({ error: "Bill not found" });
+  }
+
+  // If already paid, return success without duplicate inventory deduction
+  if (bill.status === "PAID") {
+    return res.json({ success: true, message: "Bill already settled", bill });
   }
 
   // Calculate final amounts

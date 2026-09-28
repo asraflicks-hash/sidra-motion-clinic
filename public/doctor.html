@@ -880,7 +880,7 @@
           <!-- Selected Patient Header -->
           <div class="patient-hero-summary" id="patient-banner">
             <div class="pt-main-info">
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 800; color: #0284c7;" id="active-parcha">PARCHA NO. 300</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 800; color: #0284c7;" id="active-parcha">TOKEN NO. 300</span>
               <h3 id="active-name">Rajesh Kumar Srivastava</h3>
               <div class="pt-meta-badges">
                 <span class="pt-badge" id="active-age-gender">42y / Male</span>
@@ -1046,7 +1046,7 @@
           <!-- Patient Meta Bar -->
           <div style="display: flex; justify-content: space-between; background: #f8fafc; padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #e2e8f0; font-size: 0.8rem;">
             <div><strong>Patient:</strong> <span id="pr-name">Rajesh Kumar</span> (<span id="pr-age-gen">42 / M</span>)</div>
-            <div><strong>Parcha:</strong> <span id="pr-parcha" style="color: #0284c7; font-weight: 800;">PARCHA NO. 300</span></div>
+            <div><strong>Token:</strong> <span id="pr-parcha" style="color: #0284c7; font-weight: 800;">TOKEN NO. 300</span></div>
             <div><strong>Date:</strong> <span id="pr-date">27-Sep-2026</span></div>
           </div>
 
@@ -1503,7 +1503,7 @@
       state.previewMode = mode;
       document.getElementById('pr-name').innerText = state.activeVisit?.patientName || 'Rajesh Kumar';
       document.getElementById('pr-age-gen').innerText = `${state.activeVisit?.age || 42} / ${state.activeVisit?.gender || 'M'}`;
-      document.getElementById('pr-parcha').innerText = state.activeVisit?.parchaCode || 'PARCHA NO. 300';
+      document.getElementById('pr-parcha').innerText = state.activeVisit?.parchaCode || 'TOKEN NO. 300';
       document.getElementById('pr-date').innerText = new Date().toLocaleDateString('en-GB');
       document.getElementById('pr-diagnosis').innerText = document.getElementById('rx-diagnosis').value || 'Clinical Diagnosis';
       document.getElementById('pr-advice').innerText = document.getElementById('rx-advice').value || 'Rest and hydration';
@@ -1548,7 +1548,7 @@
       if (!p) return;
       const phone = (p.whatsapp || '').replace(/[^0-9]/g, '');
       const medsText = state.prescribedMedicines.map((m, i) => `${i+1}. ${m.name} - ${m.dosage} (${m.frequency}) for ${m.duration} [${m.instructions}]`).join('%0A');
-      const text = `*SIDRA MOTION CLINIC DEMO - Digital Prescription*%0A%0A*Patient:* ${p.patientName}%0A*Parcha:* ${p.parchaCode}%0A*Date:* ${new Date().toLocaleDateString()}%0A*Diagnosis:* ${document.getElementById('rx-diagnosis').value}%0A%0A*Prescribed Medicines:*%0A${medsText}%0A%0A*Advice:* ${document.getElementById('rx-advice').value}%0A%0A_Dr. A. K. Sharma (MD, MBBS)_`;
+      const text = `*SIDRA MOTION CLINIC DEMO - Digital Prescription*%0A%0A*Patient:* ${p.patientName}%0A*Token No:* ${p.parchaCode}%0A*Date:* ${new Date().toLocaleDateString()}%0A*Diagnosis:* ${document.getElementById('rx-diagnosis').value}%0A%0A*Prescribed Medicines:*%0A${medsText}%0A%0A*Advice:* ${document.getElementById('rx-advice').value}%0A%0A_Dr. A. K. Sharma (MD, MBBS)_`;
       
       const url = `https://wa.me/${phone}?text=${text}`;
       window.open(url, '_blank');
